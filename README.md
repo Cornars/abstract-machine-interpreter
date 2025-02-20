@@ -1,1 +1,2 @@
-# abstract-machine-interpreter
+# CSC615M Abstract Machine Interpreter
+A web project XD
