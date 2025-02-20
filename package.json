@@ -1,0 +1,26 @@
+{
+  "name": "abstract-machine-interpreter",
+  "version": "1.0.0",
+  "description": "CSC615M Project",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "http-server"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Cornars/abstract-machine-interpreter.git"
+  },
+  "author": "Luis Roxas",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Cornars/abstract-machine-interpreter/issues"
+  },
+  "homepage": "https://github.com/Cornars/abstract-machine-interpreter#readme",
+  "devDependencies": {
+    "http-server": "^14.1.1"
+  },
+  "dependencies": {
+    "tailwindcss": "^4.0.7"
+  }
+}
