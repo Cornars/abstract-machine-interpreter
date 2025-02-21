@@ -1,8 +1,20 @@
-import {EditorView, keymap} from "@codemirror/view"
-import {defaultKeymap} from "@codemirror/commands"
+import {EditorView, basicSetup} from "codemirror"
+
+const initialText = `.DATA
+A] SCAN RIGHT (0, A), (1, B), (#, accept)
+
+
+.LOGIC
+`
 
 let myView = new EditorView({
-  doc: "hello",
-  extensions: [keymap.of(defaultKeymap)],
-  parent: document.body
+  doc: initialText,
+  extensions: [basicSetup],
+  parent: document.getElementById("text-editor")
 })
+
+
+const getTextFromEditor = function (){
+    console.log(myView.state.doc.toString());
+}
+window.getTextFromEditor = getTextFromEditor 
