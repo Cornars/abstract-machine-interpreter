@@ -3,9 +3,10 @@
   "version": "1.0.0",
   "description": "CSC615M Project",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "npx vite"
+    "start": "npx vite --host"
   },
   "repository": {
     "type": "git",
@@ -18,8 +19,9 @@
   },
   "homepage": "https://github.com/Cornars/abstract-machine-interpreter#readme",
   "dependencies": {
+    "@tailwindcss/vite": "^4.0.8",
     "codemirror": "^6.0.1",
-    "tailwindcss": "^4.0.7"
+    "tailwindcss": "^4.0.8"
   },
   "devDependencies": {
     "vite": "^6.1.1"
