@@ -1,6 +1,5 @@
-import {EditorView, basicSetup} from "codemirror"
+import { EditorView, basicSetup } from "codemirror";
 
-const initialText = `.LOGIC
 const initialText = `
 .DATA
 STACK S1
