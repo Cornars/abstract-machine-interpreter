@@ -1,4 +1,6 @@
 import { EditorView, basicSetup } from "codemirror";
+import { create as createStack } from "./stack";
+import { create as createQueue } from "./queue";
 
 const initialText = `
 .DATA
@@ -48,13 +50,20 @@ const getTextFromEditor = function () {
       // TODO: Throw an error for non logic strings. For now I'll do it bruteforce
       if (currentLineString != "") {
         const [dataType, dataName] = currentLineString.split(" ");
-        console.log(dataType, dataName)
+        switch (dataType) {
+          case "STACK":
+            sections.data[dataName] = createStack();
+            break;
+          case "QUEUE":
+            sections.data[dataName] = createQueue();
+            break;
+        }
       }
       currentLineIndex++;
       currentLineString = parsedText[currentLineIndex]
     }
   }
-
+  console.log(sections)
 };
 
 window.getTextFromEditor = getTextFromEditor;
