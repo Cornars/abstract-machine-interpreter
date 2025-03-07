@@ -1,38 +1,4 @@
 import { EditorView, basicSetup } from "codemirror";
-import { initializeParser } from "./parser";
-
-let parser = initializeParser();
-async function main() {
-    window.getTextFromEditor = getTextFromEditor;
-}
-
-const initialText = `.DATA
-STACK S1
-
-.LOGIC
-MANDINGO
-
-`;
-let myView = new EditorView({
-    doc: initialText,
-    extensions: [basicSetup],
-    parent: document.getElementById("text-editor"),
-});
-
-let sections = {
-    data: {},
-    logic: {},
-};
-
-function getTextFromEditor() {
-    sections = parser.compileString(myView.state.doc.text);
-    console.log(myView.state.doc.text.data.split(".LOGIC"));
-}
-
-main();
-
-/*
-import { EditorView, basicSetup } from "codemirror";
 
 const initialText = `
 .DATA
@@ -117,6 +83,3 @@ logicSectionText.forEach((state) => {
         .map((pair) => pair.replace(/[()]/g, "").split(",")); // Clean and split
     console.log(stateName, command, transitions);
 });
-
-
-*/
