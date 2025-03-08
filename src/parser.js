@@ -21,48 +21,46 @@ const commands = [
     "UP([a-zA-Z0-9_]{1,})",
     "DOWN([a-zA-Z0-9_]{1,})",
 ];
-let compileString = function (editorText) {
-    let currentLineIndex = 0;
-    let currentScope = "";
-    let currentLineString = editorText[currentLineIndex];
-    let sections = {
-        data: {},
-        logic: {},
-    };
 
-    // SKIPPING EVERYTHING BEFORE .DATA
-    // We shouldn't parse any .LOGIC or .DATA before seeing the first .DATA
-    while (!(currentLineString == ".DATA" || currentLineString == ".LOGIC")) {
-        // We don't want code before any headers are called out
-        if (currentLineString != "") {
-            throw "Code before any Headers are written!";
-        }
-        currentLineIndex++;
-        currentLineString = editorText[currentLineIndex];
+/**
+ *
+ * @param {Array} editorArray - should be an array from myView.state.doc.text
+ * @param {Object} sections
+ */
+const compileString = function (editorArray, sections) {
+    // I worked on this code thinking it'll be a big text :(
+    const editorText = editorArray.join("\n");
+    // Split text into sections by finding the .DATA and .LOGIC keywords
+    const dataSectionRegex = /\.DATA([\s\S]+?)\.LOGIC/;
+    console.log("editorText", editorText);
+    const matchData = editorText.match(dataSectionRegex);
+    // Get the .data section
+    if (matchData) {
+        const dataSectionText = matchData[1].trim().split("\n");
+
+        dataSectionText.forEach((dataVariable) => {
+            const [varType, name] = dataVariable.split(" ");
+            // TODO: make sure the varType is a data type
+            sections.data[name] = varType;
+        });
     }
-    // PARSING .DATA
-    if (currentLineString == ".DATA") {
-        currentLineIndex++;
-        currentLineString = editorText[currentLineIndex];
-        while (currentLineString != ".LOGIC") {
-            // TODO: Throw an error for non logic strings. For now I'll do it bruteforce
-            if (currentLineString != "") {
-                const [dataType, dataName] = currentLineString.split(" ");
-                switch (dataType) {
-                    case "STACK":
-                        sections.data[dataName] = createStack();
-                        break;
-                    case "QUEUE":
-                        sections.data[dataName] = createQueue();
-                        break;
-                }
-            }
-            currentLineIndex++;
-            currentLineString = editorText[currentLineIndex];
-        }
-    }
-    console.log(sections);
-    return sections;
+
+    const logicSectionText = editorText.split(".LOGIC")[1].trim().split("\n");
+    logicSectionText.forEach((state) => {
+        // skip no line states
+        if (!state) return;
+        const stateSplit = state.split(" ");
+        const stateName = stateSplit[0].replace("]", "");
+        const command = stateSplit[1];
+        const transitionText = stateSplit.slice(2);
+        if (transitionText.length == 0)
+            throw Error(`No transition states found for state ${state}`);
+        const transitions = transitionText
+            .join(" ") // Join the rest
+            .match(/\((.*?)\)/g) // Extract content inside parentheses
+            .map((pair) => pair.replace(/[()]/g, "").split(",")); // Clean and split
+        console.log(stateName, command, transitions);
+    });
 };
 
 export function initializeParser() {
