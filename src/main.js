@@ -107,6 +107,7 @@ if (matchData) {
 
 const logicSectionText = initialText.split(".LOGIC")[1].trim().split("\n");
 logicSectionText.forEach((state) => {
+    if (!state) return;
     const stateSplit = state.split(" ");
     const stateName = stateSplit[0].replace("]", "");
     const command = stateSplit[1];
