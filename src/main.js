@@ -1,32 +1,36 @@
 import { EditorView, basicSetup } from "codemirror";
 import { initializeParser } from "./parser";
 
-let parser = initializeParser();
 async function main() {
-    window.getTextFromEditor = getTextFromEditor;
-}
-
-const initialText = `.DATA
+    const parser = initializeParser();
+    const initialText = `.DATA
 STACK S1
 
 .LOGIC
+A] WRITE(S1) (#,B)
+B] SCAN (0,C), (1,D)
+C] WRITE(S1) (#,B)
+D] READ(S1) (#,E)
+E] SCAN (1,D), (#,F)
+F] READ(S1) (#,accept)
 MANDINGO
 
 `;
-let myView = new EditorView({
-    doc: initialText,
-    extensions: [basicSetup],
-    parent: document.getElementById("text-editor"),
-});
+    const myView = new EditorView({
+        doc: initialText,
+        extensions: [basicSetup],
+        parent: document.getElementById("text-editor"),
+    });
 
-let sections = {
-    data: {},
-    logic: {},
-};
+    let sections = {
+        data: {},
+        logic: {},
+    };
 
-function getTextFromEditor() {
-    sections = parser.compileString(myView.state.doc.text);
-    console.log(myView.state.doc.text.data.split(".LOGIC"));
+    function getTextFromEditor() {
+        parser.compileString(myView.state.doc.text, sections);
+    }
+    window.getTextFromEditor = getTextFromEditor;
 }
 
 main();
