@@ -26,11 +26,41 @@ MANDINGO
         data: {},
         logic: {},
     };
-
     function getTextFromEditor() {
         parser.compileString(myView.state.doc.text, sections);
     }
-    window.getTextFromEditor = getTextFromEditor;
+
+    let singleLineInputText = "";
+    function getSingleLineInput() {
+        const inputElement = document.getElementById("singleLineInput");
+        const singleLineDataDiv = document.getElementById("singleLineData");
+
+        if (!singleLineDataDiv) {
+            console.error("Missing elements: singleLineData");
+            return;
+        }
+
+        const uniqueId = "singleLineEntry"; // Unique ID for the element
+
+        singleLineInputText = `#${inputElement.value.trim()}#`;
+        let existingElement = document.getElementById(uniqueId);
+
+        if (!existingElement) {
+            // If the element does not exist, create it
+            existingElement = document.createElement("div");
+            existingElement.id = uniqueId;
+            singleLineDataDiv.appendChild(existingElement);
+        }
+
+        // Update the existing element's content
+        existingElement.textContent = singleLineInputText;
+    }
+
+    const singleLineStartButton = document.getElementById("singleLineStart");
+    singleLineStartButton.addEventListener("click", getSingleLineInput);
+    // Attach event listener to the compile button
+    const compileButton = document.getElementById("compileButton");
+    compileButton.addEventListener("click", getTextFromEditor);
 }
 
 main();
