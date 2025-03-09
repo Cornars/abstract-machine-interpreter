@@ -8,6 +8,7 @@
         <title>Document</title>
     </head>
     <body>
+        <!-- Text Editor -->
         <div id="text-editor" class="mb-5 h-52 overflow-auto"></div>
         <button
             type="button"
@@ -26,18 +27,28 @@
                 >
 10110</textarea
                 >
-                <div class="flex">
+                <button
+                    type="button"
+                    class="text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm px-4 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700"
+                >
+                    Start
+                </button>
+                <div id="singleLineData">
+                    <!-- PUT DATA STRUCTURES AND HEAD VALUES HERE -->
+                    <div>S1: [1,2,3,4]</div>
+                </div>
+                <div class="flex my-3">
+                    <!-- Step does one transition -->
                     <button
                         type="button"
                         class="text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm px-4 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700"
-                        onclick="getTextFromEditor()"
                     >
                         Step
                     </button>
+                    <!-- Reset button resets all data structures, and hides the start and reset stuff -->
                     <button
                         type="button"
                         class="text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm px-4 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700"
-                        onclick="getTextFromEditor()"
                     >
                         Reset
                     </button>
