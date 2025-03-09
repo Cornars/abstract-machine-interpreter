@@ -1,19 +1,16 @@
 import { EditorView, basicSetup } from "codemirror";
 import { initializeParser } from "./parser";
+import { step } from "./step";
 
 async function main() {
+    let singleLineInputText = "";
+    let currentHeadIndex = 0;
+    let currentState;
     const parser = initializeParser();
-    const initialText = `.DATA
-STACK S1
-
-.LOGIC
-A] WRITE(S1) (#,B)
-B] SCAN (0,C), (1,D)
-C] WRITE(S1) (#,B)
-D] READ(S1) (#,E)
-E] SCAN (1,D), (#,F)
-F] READ(S1) (#,accept)
-MANDINGO
+    const initialText = `.LOGIC
+q0] SCAN (0,q0), (1,q1), (1,accept)
+q1] SCAN (0,q0), (1,q2)
+q2] SCAN (0,q0), (1,q1), (1,accept)
 
 `;
     const myView = new EditorView({
@@ -23,15 +20,14 @@ MANDINGO
     });
 
     let sections = {
-        data: {},
-        logic: {},
+        dataSection: {},
+        logicSection: {},
     };
     function getTextFromEditor() {
-        parser.compileString(myView.state.doc.text, sections);
+        // TODO: add setting of initial state here
+        parser.compileString(myView.state.doc.text, sections, currentState);
     }
 
-    let singleLineInputText = "";
-    let currentHeadIndex = 0;
     function getSingleLineInput() {
         const inputElement = document.getElementById("singleLineInput");
         const singleLineDataDiv = document.getElementById("singleLineData");
