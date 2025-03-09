@@ -8,36 +8,47 @@
         <title>Document</title>
     </head>
     <body>
+        <!-- Text Editor -->
         <div id="text-editor" class="mb-5 h-52 overflow-auto"></div>
         <button
             type="button"
             class="text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm px-4 py-2.5 me-2 mb-2 mx-4 dark:bg-blue-600 dark:hover:bg-blue-700"
-            onclick="getTextFromEditor()"
+            id="compileButton"
         >
             Compile
         </button>
         <div class="flex">
             <div name="singleLine" class="flex-1 px-4">
                 <textarea
-                    id="chat"
+                    id="singleLineInput"
                     rows="1"
                     class="resize-none block p-2.5 w-full text-sm text-gray-900 bg-white rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 mb-5"
                     placeholder="Single Line Input..."
                 >
 10110</textarea
                 >
-                <div class="flex">
+                <button
+                    type="button"
+                    class="text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm px-4 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700"
+                    id="singleLineStart"
+                >
+                    Start
+                </button>
+                <div id="singleLineData">
+                    <!-- PUT DATA STRUCTURES AND HEAD VALUES HERE -->
+                </div>
+                <div class="flex my-3">
+                    <!-- Step does one transition -->
                     <button
                         type="button"
                         class="text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm px-4 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700"
-                        onclick="getTextFromEditor()"
                     >
                         Step
                     </button>
+                    <!-- Reset button resets all data structures, and hides the start and reset stuff -->
                     <button
                         type="button"
                         class="text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm px-4 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700"
-                        onclick="getTextFromEditor()"
                     >
                         Reset
                     </button>
