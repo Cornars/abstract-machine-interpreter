@@ -31,6 +31,7 @@ MANDINGO
     }
 
     let singleLineInputText = "";
+    let currentHeadIndex = 0;
     function getSingleLineInput() {
         const inputElement = document.getElementById("singleLineInput");
         const singleLineDataDiv = document.getElementById("singleLineData");
@@ -54,8 +55,25 @@ MANDINGO
 
         // Update the existing element's content
         existingElement.textContent = singleLineInputText;
+        updateHeadHighlight();
     }
 
+    function updateHeadHighlight() {
+        if (currentHeadIndex < 0) currentHeadIndex = 0;
+        if (currentHeadIndex >= singleLineInputText.length)
+            currentHeadIndex = singleLineInputText.length - 1;
+
+        // Apply red color to the character at `currentHeadIndex`
+        const highlightedText = singleLineInputText
+            .split("")
+            .map((char, index) =>
+                index === currentHeadIndex
+                    ? `<span style="color: red;">${char}</span>`
+                    : char
+            )
+            .join("");
+        document.getElementById("singleLineEntry").innerHTML = highlightedText;
+    }
     const singleLineStartButton = document.getElementById("singleLineStart");
     singleLineStartButton.addEventListener("click", getSingleLineInput);
     // Attach event listener to the compile button
