@@ -5,7 +5,7 @@ import { step } from "./step";
 async function main() {
     let singleLineInputText = "";
     let currentHeadIndex = 0;
-    let currentState;
+    let currentState = { current: undefined };
     const parser = initializeParser();
     const initialText = `.LOGIC
 q0] SCAN (0,q0), (1,q1), (1,accept)
@@ -26,6 +26,8 @@ q2] SCAN (0,q0), (1,q1), (1,accept)
     function getTextFromEditor() {
         // TODO: add setting of initial state here
         parser.compileString(myView.state.doc.text, sections, currentState);
+        console.log(sections);
+        console.log(currentState);
     }
 
     function getSingleLineInput() {
@@ -70,6 +72,18 @@ q2] SCAN (0,q0), (1,q1), (1,accept)
             .join("");
         document.getElementById("singleLineEntry").innerHTML = highlightedText;
     }
+    function singleLineStep() {
+        currentHeadIndex = step(
+            sections,
+            currentState,
+            singleLineInputText,
+            currentHeadIndex
+        );
+        console.log(currentHeadIndex, currentState);
+        updateHeadHighlight();
+    }
+    const stepButton = document.getElementById("singleLineStep");
+    stepButton.addEventListener("click", singleLineStep);
     const singleLineStartButton = document.getElementById("singleLineStart");
     singleLineStartButton.addEventListener("click", getSingleLineInput);
     // Attach event listener to the compile button

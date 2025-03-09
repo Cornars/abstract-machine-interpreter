@@ -45,7 +45,7 @@ const compileString = function (editorArray, sections, currentState) {
     }
 
     const logicSectionText = editorText.split(".LOGIC")[1].trim().split("\n");
-    logicSectionText.forEach((state) => {
+    logicSectionText.forEach((state, index) => {
         // skip no line states
         if (!state) return;
         const stateSplit = state.split(" ");
@@ -63,8 +63,11 @@ const compileString = function (editorArray, sections, currentState) {
         sections.logicSection[stateName] = {};
         sections.logicSection[stateName].command = command;
         sections.logicSection[stateName].transitions = transitions;
+        // set start state
+        if (index == 0) currentState.current = sections.logicSection[stateName];
     });
-    console.log(sections);
+    sections.logicSection["accept"] = "ACCEPT";
+    sections.logicSection["reject"] = "REJECT";
 };
 
 export function initializeParser() {

@@ -11,6 +11,27 @@
  */
 
 /**
+ * At this index, what is the symbol we read, and what kind of transition are we going to do?
+ */
+export function step(sections, currentState, inputTape, currentIndex) {
+    let head = inputTape[currentIndex];
+    // basedo on the input, what is the next state we are going to
+    switch (currentState.current.command) {
+        // read right of input tape, then move head there. make sure to transition based on what was read
+        case "SCAN":
+            let scanRight = inputTape[currentIndex + 1];
+            let nextState = currentState.current.transitions[scanRight];
+            console.log(sections.logicSection);
+            let nextStateObject = sections.logicSection[nextState];
+            console.log(nextStateObject);
+            currentState.current = nextStateObject;
+        default:
+    }
+    // Add inputTape here for times where it gets modified
+
+    return currentIndex + 1;
+}
+/**
  *
  * @param {Object} inputTape
  * @param {*} currentIndex
