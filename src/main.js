@@ -41,6 +41,8 @@ q2] SCAN (0,q1), (1,q0)
             document.getElementById("compileButton").style.display = "none";
             document.getElementById("editButton").style.display =
                 "inline-block";
+            document.getElementById("singleLineStart").style.display =
+                "inline-block";
         } catch (error) {
             errorHandlingArea.textContent = `Compile error: ${error.message}`;
             errorHandlingArea.style.color = "red";
@@ -87,7 +89,7 @@ q2] SCAN (0,q1), (1,q0)
                     : char
             )
             .join("");
-        document.getElementById("singleLineEntry").innerHTML = highlightedText;
+        // document.getElementById("singleLineEntry").innerHTML = highlightedText;
     }
     function singleLineStep() {
         currentHeadIndex = step(
@@ -123,6 +125,7 @@ q2] SCAN (0,q1), (1,q0)
         // Hide edit button and show compile button
         document.getElementById("editButton").style.display = "none";
         document.getElementById("compileButton").style.display = "inline-block";
+        document.getElementById("singleLineStart").style.display = "none";
     }
 
     function onStart() {
