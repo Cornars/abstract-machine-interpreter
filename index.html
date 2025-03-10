@@ -10,13 +10,25 @@
     <body>
         <!-- Text Editor -->
         <div id="text-editor" class="mb-5 h-52 overflow-auto"></div>
-        <button
-            type="button"
-            class="text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm px-4 py-2.5 me-2 mb-2 mx-4 dark:bg-blue-600 dark:hover:bg-blue-700"
-            id="compileButton"
-        >
-            Compile
-        </button>
+        <div id="errorHandlingArea" class="m-4">
+            Oh no! This is a test error
+        </div>
+        <div>
+            <button
+                type="button"
+                class="text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm px-4 py-2.5 me-2 mb-2 ml-4 dark:bg-blue-600 dark:hover:bg-blue-700"
+                id="compileButton"
+            >
+                Compile
+            </button>
+            <button
+                type="button"
+                class="text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm px-4 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700"
+                id="editButton"
+            >
+                Edit
+            </button>
+        </div>
         <div class="flex">
             <div name="singleLine" class="flex-1 px-4">
                 <textarea
