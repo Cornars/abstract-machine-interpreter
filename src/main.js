@@ -89,7 +89,7 @@ q2] SCAN (0,q1), (1,q0)
                     : char
             )
             .join("");
-        // document.getElementById("singleLineEntry").innerHTML = highlightedText;
+        document.getElementById("singleLineEntry").innerHTML = highlightedText;
     }
     function singleLineStep() {
         currentHeadIndex = step(
@@ -109,7 +109,7 @@ q2] SCAN (0,q1), (1,q0)
             const singleLineEntry = document.getElementById("singleLineEntry");
             singleLineEntry.style.color =
                 currentState.current === "ACCEPT" ? "green" : "red";
-            document.getElementById("singleLineStep").disabled = true;
+            document.getElementById("singleLineStep").style.display = "none";
         }
     }
     function onEdit() {
@@ -118,14 +118,15 @@ q2] SCAN (0,q1), (1,q0)
             effects: StateEffect.reconfigure.of([basicSetup]),
         });
 
-        // Reset single step
-        currentHeadIndex = 0;
-        updateHeadHighlight();
-
+        resetData();
+        const errorHandlingArea = document.getElementById("errorHandlingArea");
+        errorHandlingArea.textContent = "Compile when ready...";
+        errorHandlingArea.style.color = "black";
         // Hide edit button and show compile button
         document.getElementById("editButton").style.display = "none";
         document.getElementById("compileButton").style.display = "inline-block";
         document.getElementById("singleLineStart").style.display = "none";
+        document.getElementById("singleLineData").style.display = "none";
     }
 
     function onStart() {
@@ -133,19 +134,25 @@ q2] SCAN (0,q1), (1,q0)
         // Show step and reset buttons
         document.getElementById("singleLineStep").style.display =
             "inline-block";
+        document.getElementById("singleLineData").style.display = "";
         document.getElementById("resetButton").style.display = "inline-block";
     }
 
     function onReset() {
-        currentHeadIndex = 0;
-        currentState.current = undefined;
-        singleLineInputText = "";
+        resetData();
+        parser.compileString(myView.state.doc.text, sections, currentState);
         document.getElementById("singleLineEntry").textContent = "";
+        document.getElementById("singleLineEntry").style.color = "black";
         document.getElementById("singleLineStep").style.display = "none";
         document.getElementById("resetButton").style.display = "none";
         document.getElementById("singleLineStep").disabled = false;
     }
 
+    function resetData() {
+        currentHeadIndex = 0;
+        currentState.current = undefined;
+        singleLineInputText = "";
+    }
     document.getElementById("resetButton").addEventListener("click", onReset);
     document
         .getElementById("singleLineStart")
