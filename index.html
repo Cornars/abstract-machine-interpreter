@@ -10,9 +10,7 @@
     <body>
         <!-- Text Editor -->
         <div id="text-editor" class="mb-5 h-52 overflow-auto"></div>
-        <div id="errorHandlingArea" class="m-4">
-            Oh no! This is a test error
-        </div>
+        <div id="errorHandlingArea" class="m-4">Compile when ready...</div>
         <div>
             <button
                 type="button"
@@ -23,7 +21,7 @@
             </button>
             <button
                 type="button"
-                class="text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm px-4 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700"
+                class="hidden text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm px-4 py-2.5 me-2 mb-2 ml-4 dark:bg-blue-600 dark:hover:bg-blue-700"
                 id="editButton"
             >
                 Edit
@@ -61,6 +59,7 @@
                     <!-- Reset button resets all data structures, and hides the start and reset stuff -->
                     <button
                         type="button"
+                        id="resetButton"
                         class="text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm px-4 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700"
                     >
                         Reset

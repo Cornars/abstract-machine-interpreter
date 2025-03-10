@@ -1,9 +1,10 @@
 import { EditorView, basicSetup } from "codemirror";
-import { EditorState } from "@codemirror/state";
+import { EditorState, StateEffect } from "@codemirror/state";
 import { initializeParser } from "./parser";
 import { step } from "./step";
 
 async function main() {
+    const reconfigureEffect = StateEffect.define();
     let singleLineInputText = "";
     let currentHeadIndex = 0;
     let currentState = { current: undefined };
@@ -15,8 +16,6 @@ q2] SCAN (0,q1), (1,q0)
 `;
     const myView = new EditorView({
         doc: initialText,
-        // EditorState set to read only when pressing compile. maybe add an edit button to remove
-        // extensions: [basicSetup, EditorState.readOnly.of(true)],
         extensions: [basicSetup],
         parent: document.getElementById("text-editor"),
     });
@@ -25,10 +24,27 @@ q2] SCAN (0,q1), (1,q0)
         logicSection: {},
     };
     function getTextFromEditor() {
-        // TODO: add setting of initial state here
-        parser.compileString(myView.state.doc.text, sections, currentState);
-        console.log(sections);
-        console.log(currentState);
+        const errorHandlingArea = document.getElementById("errorHandlingArea");
+        try {
+            parser.compileString(myView.state.doc.text, sections, currentState);
+            errorHandlingArea.textContent = "Compile complete";
+            errorHandlingArea.style.color = "green";
+
+            // Make editor read-only
+            myView.dispatch({
+                effects: StateEffect.reconfigure.of([
+                    basicSetup,
+                    EditorState.readOnly.of(true), // Add read-only extension
+                ]),
+            });
+            // Hide compile button and show edit button
+            document.getElementById("compileButton").style.display = "none";
+            document.getElementById("editButton").style.display =
+                "inline-block";
+        } catch (error) {
+            errorHandlingArea.textContent = `Compile error: ${error.message}`;
+            errorHandlingArea.style.color = "red";
+        }
     }
 
     function getSingleLineInput() {
@@ -81,14 +97,69 @@ q2] SCAN (0,q1), (1,q0)
             currentHeadIndex
         );
         updateHeadHighlight();
+
+        console.log(currentState.current);
+        // Check for accept/reject state
+        if (
+            currentState.current === "ACCEPT" ||
+            currentState.current === "REJECT"
+        ) {
+            const singleLineEntry = document.getElementById("singleLineEntry");
+            singleLineEntry.style.color =
+                currentState.current === "ACCEPT" ? "green" : "red";
+            document.getElementById("singleLineStep").disabled = true;
+        }
     }
-    const stepButton = document.getElementById("singleLineStep");
-    stepButton.addEventListener("click", singleLineStep);
-    const singleLineStartButton = document.getElementById("singleLineStart");
-    singleLineStartButton.addEventListener("click", getSingleLineInput);
+    function onEdit() {
+        // Make editor editable
+        myView.dispatch({
+            effects: StateEffect.reconfigure.of([basicSetup]),
+        });
+
+        // Reset single step
+        currentHeadIndex = 0;
+        updateHeadHighlight();
+
+        // Hide edit button and show compile button
+        document.getElementById("editButton").style.display = "none";
+        document.getElementById("compileButton").style.display = "inline-block";
+    }
+
+    function onStart() {
+        getSingleLineInput();
+        // Show step and reset buttons
+        document.getElementById("singleLineStep").style.display =
+            "inline-block";
+        document.getElementById("resetButton").style.display = "inline-block";
+    }
+
+    function onReset() {
+        currentHeadIndex = 0;
+        currentState.current = undefined;
+        singleLineInputText = "";
+        document.getElementById("singleLineEntry").textContent = "";
+        document.getElementById("singleLineStep").style.display = "none";
+        document.getElementById("resetButton").style.display = "none";
+        document.getElementById("singleLineStep").disabled = false;
+    }
+
+    document.getElementById("resetButton").addEventListener("click", onReset);
+    document
+        .getElementById("singleLineStart")
+        .addEventListener("click", onStart);
+
+    document.getElementById("editButton").addEventListener("click", onEdit);
+    document
+        .getElementById("singleLineStep")
+        .addEventListener("click", singleLineStep);
+
+    document
+        .getElementById("singleLineStart")
+        .addEventListener("click", getSingleLineInput);
     // Attach event listener to the compile button
-    const compileButton = document.getElementById("compileButton");
-    compileButton.addEventListener("click", getTextFromEditor);
+    document
+        .getElementById("compileButton")
+        .addEventListener("click", getTextFromEditor);
 }
 
 main();
