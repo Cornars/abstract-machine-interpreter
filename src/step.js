@@ -20,11 +20,11 @@ export function step(sections, currentState, inputTape, currentIndex) {
         // read right of input tape, then move head there. make sure to transition based on what was read
         case "SCAN":
             let scanRight = inputTape[currentIndex + 1];
+            console.log("SCAN RIGHT: ", scanRight);
             let nextState = currentState.current.transitions[scanRight];
-            console.log(sections.logicSection);
             let nextStateObject = sections.logicSection[nextState];
-            console.log(nextStateObject);
             currentState.current = nextStateObject;
+            console.log("TRANSITIONS: ", currentState.current.transitions);
         default:
     }
     // Add inputTape here for times where it gets modified
