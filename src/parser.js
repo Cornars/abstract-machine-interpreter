@@ -27,7 +27,7 @@ const commands = [
  * @param {Array} editorArray - should be an array from myView.state.doc.text
  * @param {Object} sections
  */
-const compileString = function (editorArray, sections, currentState) {
+const compileString = function (editorArray, sections, machineState) {
     // I worked on this code thinking it'll be a big text :(
     const editorText = editorArray.join("\n");
     // Split text into sections by finding the .DATA and .LOGIC keywords
@@ -64,10 +64,12 @@ const compileString = function (editorArray, sections, currentState) {
         sections.logicSection[stateName].command = command;
         sections.logicSection[stateName].transitions = transitions;
         // set start state
-        if (index == 0) currentState.current = sections.logicSection[stateName];
+        if (index == 0)
+            machineState.currentState = sections.logicSection[stateName];
     });
     sections.logicSection["accept"] = "ACCEPT";
     sections.logicSection["reject"] = "REJECT";
+    machineState.statusMachine = "compiled";
 };
 
 export function initializeParser() {

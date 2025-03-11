@@ -4,10 +4,7 @@ import { initializeParser } from "./parser";
 import { step } from "./step";
 
 async function main() {
-    let singleLineInputText = "";
-    let currentHeadIndex = 0;
-    let currentState = { current: undefined };
-    let fooState = {
+    let machineState = {
         currentState: undefined,
         currentHeadIndex: 0,
         singleLineInputText: "",
@@ -31,7 +28,7 @@ q2] SCAN (0,q1), (1,q0)
     function getTextFromEditor() {
         const errorHandlingArea = document.getElementById("errorHandlingArea");
         try {
-            parser.compileString(myView.state.doc.text, sections, currentState);
+            parser.compileString(myView.state.doc.text, sections, machineState);
             errorHandlingArea.textContent = "Compile complete";
             errorHandlingArea.style.color = "green";
 
@@ -65,7 +62,7 @@ q2] SCAN (0,q1), (1,q0)
 
         const uniqueId = "singleLineEntry"; // Unique ID for the element
 
-        singleLineInputText = `#${inputElement.value.trim()}#`;
+        machineState.singleLineInputText = `#${inputElement.value.trim()}#`;
         let existingElement = document.getElementById(uniqueId);
 
         if (!existingElement) {
@@ -76,20 +73,25 @@ q2] SCAN (0,q1), (1,q0)
         }
 
         // Update the existing element's content
-        existingElement.textContent = singleLineInputText;
+        existingElement.textContent = machineState.singleLineInputText;
         updateHeadHighlight();
     }
 
     function updateHeadHighlight() {
-        if (currentHeadIndex < 0) currentHeadIndex = 0;
-        if (currentHeadIndex >= singleLineInputText.length)
-            currentHeadIndex = singleLineInputText.length - 1;
+        if (machineState.currentHeadIndex < 0)
+            machineState.currentHeadIndex = 0;
+        if (
+            machineState.currentHeadIndex >=
+            machineState.singleLineInputText.length
+        )
+            machineState.currentHeadIndex =
+                machineState.singleLineInputText.length - 1;
 
-        // Apply red color to the character at `currentHeadIndex`
-        const highlightedText = singleLineInputText
+        // Apply red color to the character at `machineState.currentHeadIndex`
+        const highlightedText = machineState.singleLineInputText
             .split("")
             .map((char, index) =>
-                index === currentHeadIndex
+                index === machineState.currentHeadIndex
                     ? `<span style="color: red;">${char}</span>`
                     : char
             )
@@ -97,23 +99,18 @@ q2] SCAN (0,q1), (1,q0)
         document.getElementById("singleLineEntry").innerHTML = highlightedText;
     }
     function singleLineStep() {
-        currentHeadIndex = step(
-            sections,
-            currentState,
-            singleLineInputText,
-            currentHeadIndex
-        );
+        step(sections, machineState);
         updateHeadHighlight();
 
-        console.log(currentState.current);
+        console.log(machineState.currentState);
         // Check for accept/reject state
         if (
-            currentState.current === "ACCEPT" ||
-            currentState.current === "REJECT"
+            machineState.currentState === "ACCEPT" ||
+            machineState.currentState === "REJECT"
         ) {
             const singleLineEntry = document.getElementById("singleLineEntry");
             singleLineEntry.style.color =
-                currentState.current === "ACCEPT" ? "green" : "red";
+                machineState.currentState === "ACCEPT" ? "green" : "red";
             document.getElementById("singleLineStep").style.display = "none";
         }
     }
@@ -145,7 +142,7 @@ q2] SCAN (0,q1), (1,q0)
 
     function onReset() {
         resetData();
-        parser.compileString(myView.state.doc.text, sections, currentState);
+        parser.compileString(myView.state.doc.text, sections, machineState);
         document.getElementById("singleLineEntry").textContent = "";
         document.getElementById("singleLineEntry").style.color = "black";
         document.getElementById("singleLineStep").style.display = "none";
@@ -154,9 +151,9 @@ q2] SCAN (0,q1), (1,q0)
     }
 
     function resetData() {
-        currentHeadIndex = 0;
-        currentState.current = undefined;
-        singleLineInputText = "";
+        machineState.currentHeadIndex = 0;
+        machineState.currentState = undefined;
+        machineState.singleLineInputText = "";
     }
     document.getElementById("resetButton").addEventListener("click", onReset);
     document

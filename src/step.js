@@ -13,23 +13,27 @@
 /**
  * At this index, what is the symbol we read, and what kind of transition are we going to do?
  */
-export function step(sections, currentState, inputTape, currentIndex) {
-    let head = inputTape[currentIndex];
+export function step(sections, machineState) {
     // basedo on the input, what is the next state we are going to
-    switch (currentState.current.command) {
+    switch (machineState.currentState.command) {
         // read right of input tape, then move head there. make sure to transition based on what was read
         case "SCAN":
-            let scanRight = inputTape[currentIndex + 1];
-            console.log("SCAN RIGHT: ", scanRight);
-            let nextState = currentState.current.transitions[scanRight];
-            let nextStateObject = sections.logicSection[nextState];
-            currentState.current = nextStateObject;
-            console.log("TRANSITIONS: ", currentState.current.transitions);
-        default:
-    }
-    // Add inputTape here for times where it gets modified
+            console.log("machine:", machineState);
 
-    return currentIndex + 1;
+            let scanRightValue =
+                machineState.singleLineInputText[
+                    machineState.currentHeadIndex + 1
+                ];
+            console.log("SCAN RIGHT: ", scanRightValue);
+            let nextStateName =
+                machineState.currentState.transitions[scanRightValue];
+            let nextStateObject = sections.logicSection[nextStateName];
+            machineState.currentState = nextStateObject;
+            console.log("TRANSITIONS: ", machineState.currentState.transitions);
+            machineState.currentHeadIndex++;
+        default:
+            break;
+    }
 }
 /**
  *
