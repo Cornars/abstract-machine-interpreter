@@ -128,7 +128,9 @@ q2] SCAN (0,q1), (1,q0)
         document.getElementById("editButton").style.display = "none";
         document.getElementById("compileButton").style.display = "inline-block";
         document.getElementById("singleLineStart").style.display = "none";
+        document.getElementById("singleLineStep").style.display = "none";
         document.getElementById("singleLineData").style.display = "none";
+        document.getElementById("resetButton").style.display = "none";
     }
 
     function onStart() {
