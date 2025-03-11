@@ -137,6 +137,7 @@ q2] SCAN (0,q1), (1,q0)
         document.getElementById("singleLineStep").style.display =
             "inline-block";
         document.getElementById("singleLineData").style.display = "";
+        document.getElementById("singleLineStart").style.display = "none";
         document.getElementById("resetButton").style.display = "inline-block";
     }
 
@@ -148,6 +149,8 @@ q2] SCAN (0,q1), (1,q0)
         document.getElementById("singleLineStep").style.display = "none";
         document.getElementById("resetButton").style.display = "none";
         document.getElementById("singleLineStep").disabled = false;
+        document.getElementById("singleLineStart").style.display =
+            "inline-block";
     }
 
     function resetData() {
