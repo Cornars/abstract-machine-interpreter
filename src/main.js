@@ -4,10 +4,15 @@ import { initializeParser } from "./parser";
 import { step } from "./step";
 
 async function main() {
-    const reconfigureEffect = StateEffect.define();
     let singleLineInputText = "";
     let currentHeadIndex = 0;
     let currentState = { current: undefined };
+    let fooState = {
+        currentState: undefined,
+        currentHeadIndex: 0,
+        singleLineInputText: "",
+        statusMachine: "toCompile",
+    };
     const parser = initializeParser();
     const initialText = `.LOGIC
 q0] SCAN (0,q2), (2,accept)
