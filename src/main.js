@@ -102,7 +102,7 @@ q2] SCAN (0,q1), (1,q0)
         step(sections, machineState);
         updateHeadHighlight();
 
-        console.log(machineState.currentState);
+        console.log("machine's current state:", machineState.currentState);
         // Check for accept/reject state
         if (
             machineState.currentState === "ACCEPT" ||
