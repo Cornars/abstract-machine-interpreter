@@ -34,6 +34,11 @@ export function step(sections, machineState) {
         default:
             break;
     }
+    // No state it got transitioned to means it should be rejected
+    if (machineState.currentState == undefined) {
+        console.log("No State Transition, REJECT INPUT");
+        machineState.currentState = "REJECT";
+    }
 }
 /**
  *
