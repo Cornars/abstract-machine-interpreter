@@ -68,20 +68,29 @@ q2] SCAN (0,q1), (1,q0)
             return;
         }
 
-        const uniqueId = "singleLineEntry"; // Unique ID for the element
         // @ts-ignore
         machineState.singleLineInputText = `#${inputElement.value.trim()}#`;
-        let existingElement = document.getElementById(uniqueId);
 
-        if (!existingElement) {
+        const inputID = "singleLineEntry"; // Unique ID for the element
+        let existingInputElement = document.getElementById(inputID);
+        if (!existingInputElement) {
             // If the element does not exist, create it
-            existingElement = document.createElement("div");
-            existingElement.id = uniqueId;
-            singleLineDataDiv.appendChild(existingElement);
+            existingInputElement = document.createElement("div");
+            existingInputElement.id = inputID;
+            singleLineDataDiv.appendChild(existingInputElement);
         }
 
-        // Update the existing element's content
-        existingElement.textContent = machineState.singleLineInputText;
+        const outputID = "singleLineOutput"; // Unique ID for the output element
+        let existingOutputElement = document.getElementById(outputID);
+        if (!existingOutputElement) {
+            // If the element does not exist, create it
+            existingOutputElement = document.createElement("div");
+            existingOutputElement.id = outputID;
+            singleLineDataDiv.appendChild(existingOutputElement);
+        }
+
+        existingOutputElement.textContent = machineState.singleLineOutputText;
+        existingInputElement.textContent = machineState.singleLineInputText;
         updateHeadHighlight();
     }
 
