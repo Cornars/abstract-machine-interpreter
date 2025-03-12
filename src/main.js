@@ -11,6 +11,7 @@ async function main() {
         currentState: undefined,
         currentHeadIndex: 0,
         singleLineInputText: "",
+        singleLineOutputText: "",
     };
     const parser = initializeParser();
     const initialText = `.LOGIC
@@ -23,13 +24,18 @@ q2] SCAN (0,q1), (1,q0)
         extensions: [basicSetup],
         parent: document.getElementById("text-editor"),
     });
+    /** @type {Sections} */
     let sections = {
         dataSection: {},
-        logicSection: {},
+        logicSection: {
+            accept: "ACCEPT",
+            reject: "REJECT",
+        },
     };
     function getTextFromEditor() {
         const errorHandlingArea = document.getElementById("errorHandlingArea");
         try {
+            // @ts-ignore
             parser.compileString(myView.state.doc.text, sections, machineState);
             errorHandlingArea.textContent = "Compile complete";
             errorHandlingArea.style.color = "green";
@@ -63,7 +69,7 @@ q2] SCAN (0,q1), (1,q0)
         }
 
         const uniqueId = "singleLineEntry"; // Unique ID for the element
-
+        // @ts-ignore
         machineState.singleLineInputText = `#${inputElement.value.trim()}#`;
         let existingElement = document.getElementById(uniqueId);
 
@@ -147,11 +153,13 @@ q2] SCAN (0,q1), (1,q0)
 
     function onReset() {
         resetData();
+        // @ts-ignore
         parser.compileString(myView.state.doc.text, sections, machineState);
         document.getElementById("singleLineEntry").textContent = "";
         document.getElementById("singleLineEntry").style.color = "black";
         document.getElementById("singleLineStep").style.display = "none";
         document.getElementById("resetButton").style.display = "none";
+        // @ts-ignore
         document.getElementById("singleLineStep").disabled = false;
         document.getElementById("singleLineStart").style.display =
             "inline-block";

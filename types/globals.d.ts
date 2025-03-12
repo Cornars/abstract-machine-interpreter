@@ -1,5 +1,5 @@
 interface MachineState {
-    currentState: State;
+    currentState: State | "ACCEPT" | "REJECT";
     currentHeadIndex: number;
     singleLineInputText: string;
     singleLineOutputText: string;

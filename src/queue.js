@@ -7,7 +7,8 @@ export function create() {
             queue.push(value);
         },
         dequeue() {
-            return queue.pop(0);
+            // TODO: MAKE SURE THIS IS RIGHT.
+            return queue.shift();
         },
         getFirstElement() {
             return queue[0];

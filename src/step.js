@@ -18,13 +18,18 @@
  */
 export function step(sections, machineState) {
     // basedo on the input, what is the next state we are going to
-    switch (machineState.currentState.command) {
-        // read right of input tape, then move head there. make sure to transition based on what was read
-        case "SCAN":
-            scan(sections, machineState);
-        default:
-            break;
+    if (typeof machineState.currentState !== "string") {
+        switch (machineState.currentState.command) {
+            // read right of input tape, then move head there. make sure to transition based on what was read
+            case "SCAN":
+                scan(sections, machineState);
+                break;
+            default:
+                console.log("INVALID COMMAND!");
+                break;
+        }
     }
+
     // No state it got transitioned to means it should be rejected
     if (machineState.currentState == undefined) {
         console.log("No State Transition, REJECT INPUT");
@@ -41,9 +46,15 @@ function scan(sections, machineState) {
     let scanRightValue =
         machineState.singleLineInputText[machineState.currentHeadIndex + 1];
     console.log("Value Scanned on Right: ", scanRightValue);
-    let nextStateName = machineState.currentState.transitions[scanRightValue];
-    let nextStateObject = sections.logicSection[nextStateName];
-    machineState.currentState = nextStateObject;
+    if (typeof machineState.currentState !== "string") {
+        let nextStateName =
+            machineState.currentState.transitions[scanRightValue];
+        let nextStateObject = sections.logicSection[nextStateName];
+        machineState.currentState = nextStateObject;
+    } else {
+        console.error("type of currentState is not string, REJECTING");
+        machineState.currentState = "REJECT";
+    }
     console.log("TRANSITION STATE: ", machineState.currentState);
     machineState.currentHeadIndex++;
     console.log("======== END OF SCAN ========");

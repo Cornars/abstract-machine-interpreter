@@ -60,8 +60,6 @@ const compileString = function (editorArray, sections, machineState) {
         if (index == 0)
             machineState.currentState = sections.logicSection[stateName];
     });
-    sections.logicSection["accept"] = "ACCEPT";
-    sections.logicSection["reject"] = "REJECT";
 };
 
 export function initializeParser() {
