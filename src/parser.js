@@ -69,7 +69,6 @@ const compileString = function (editorArray, sections, machineState) {
     });
     sections.logicSection["accept"] = "ACCEPT";
     sections.logicSection["reject"] = "REJECT";
-    machineState.statusMachine = "compiled";
 };
 
 export function initializeParser() {

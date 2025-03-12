@@ -8,7 +8,6 @@ async function main() {
         currentState: undefined,
         currentHeadIndex: 0,
         singleLineInputText: "",
-        statusMachine: "toCompile",
     };
     const parser = initializeParser();
     const initialText = `.LOGIC
