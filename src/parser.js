@@ -1,14 +1,7 @@
 import { create as createStack } from "./stack";
 import { create as createQueue } from "./queue";
-/**
- * Compiles the string. returns an Object with that looks like:
- * ```javascript
- * const sections = {
- *   data: {},
- *   logic: {},
- * };
- * ```
- */
+
+/// <reference path="../types/globals.d.ts" />
 const commands = [
     "SCAN LEFT",
     "SCAN RIGHT",

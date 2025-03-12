@@ -1,6 +1,6 @@
+/// <reference path="../types/globals.d.ts" />
 export function create() {
     let queue = [];
-    let isQueueEmpty = () => queue == undefined || queue == 0;
     let publicAPI = {
         enqueue(value) {
             console.log(`enqueued ${value}`);

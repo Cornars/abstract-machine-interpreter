@@ -1,3 +1,4 @@
+/// <reference path="../types/globals.d.ts" />
 /**
  * step.js will be in charge of handling the steps of the machine.
  *
@@ -11,7 +12,9 @@
  */
 
 /**
- * At this index, what is the symbol we read, and what kind of transition are we going to do?
+ *
+ * @param {Sections} sections
+ * @param {MachineState} machineState
  */
 export function step(sections, machineState) {
     // basedo on the input, what is the next state we are going to
@@ -30,7 +33,8 @@ export function step(sections, machineState) {
 }
 /**
  *
- * @param {Object} macineState
+ * @param {Sections} sections
+ * @param {MachineState} machineState
  */
 function scan(sections, machineState) {
     console.log("======== START OF SCAN ========");

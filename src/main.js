@@ -3,7 +3,10 @@ import { EditorState, StateEffect } from "@codemirror/state";
 import { initializeParser } from "./parser";
 import { step } from "./step";
 
+/// <reference path="../types/globals.d.ts" />
+
 async function main() {
+    /** @type {MachineState} */
     let machineState = {
         currentState: undefined,
         currentHeadIndex: 0,
