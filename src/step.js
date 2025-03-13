@@ -33,7 +33,7 @@ export function step(sections, machineState) {
     // No state it got transitioned to means it should be rejected
     if (machineState.currentState == undefined) {
         console.log("No State Transition, REJECT INPUT");
-        machineState.currentState = "REJECT";
+        machineState.currentState = sections.logicSection.reject;
     }
 }
 /**
@@ -53,7 +53,7 @@ function scan(sections, machineState) {
         machineState.currentState = nextStateObject;
     } else {
         console.error("type of currentState is not string, REJECTING");
-        machineState.currentState = "REJECT";
+        machineState.currentState = undefined;
     }
     console.log("TRANSITION STATE: ", machineState.currentState);
     machineState.currentHeadIndex++;

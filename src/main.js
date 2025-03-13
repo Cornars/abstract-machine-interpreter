@@ -28,8 +28,16 @@ q2] SCAN (0,q1), (1,q0)
     let sections = {
         dataSection: {},
         logicSection: {
-            accept: "ACCEPT",
-            reject: "REJECT",
+            accept: {
+                stateName: "accept",
+                command: "HALT",
+                transitions: undefined,
+            },
+            reject: {
+                stateName: "reject",
+                command: "HALT",
+                transitions: undefined,
+            },
         },
     };
     function getTextFromEditor() {
@@ -72,6 +80,14 @@ q2] SCAN (0,q1), (1,q0)
         machineState.singleLineInputText = `#${inputElement.value.trim()}#`;
 
         const inputID = "singleLineEntry"; // Unique ID for the element
+        let singleLineCurrentState = document.getElementById(
+            "singleLineCurrentState"
+        );
+        if (!singleLineCurrentState) {
+            singleLineCurrentState = document.createElement("div");
+            singleLineCurrentState.id = "singleLineCurrentState";
+            singleLineDataDiv.appendChild(singleLineCurrentState);
+        }
         let existingInputElement = document.getElementById(inputID);
         if (!existingInputElement) {
             // If the element does not exist, create it
@@ -80,6 +96,11 @@ q2] SCAN (0,q1), (1,q0)
             singleLineDataDiv.appendChild(existingInputElement);
         }
 
+        // Make sure it's a state
+        if (typeof machineState.currentState == "object") {
+            singleLineCurrentState.textContent =
+                machineState.currentState.stateName;
+        }
         const outputID = "singleLineOutput"; // Unique ID for the output element
         let existingOutputElement = document.getElementById(outputID);
         if (!existingOutputElement) {
@@ -122,14 +143,18 @@ q2] SCAN (0,q1), (1,q0)
         console.log("machine's current state:", machineState.currentState);
         // Check for accept/reject state
         if (
-            machineState.currentState === "ACCEPT" ||
-            machineState.currentState === "REJECT"
+            machineState.currentState.stateName === "accept" ||
+            machineState.currentState.stateName === "reject"
         ) {
             const singleLineEntry = document.getElementById("singleLineEntry");
             singleLineEntry.style.color =
-                machineState.currentState === "ACCEPT" ? "green" : "red";
+                machineState.currentState.stateName === "accept"
+                    ? "green"
+                    : "red";
             document.getElementById("singleLineStep").style.display = "none";
         }
+        document.getElementById("singleLineCurrentState").textContent =
+            machineState.currentState.stateName;
     }
     function onEdit() {
         // Make editor editable

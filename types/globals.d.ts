@@ -1,5 +1,5 @@
 interface MachineState {
-    currentState: State | "ACCEPT" | "REJECT";
+    currentState: State;
     currentHeadIndex: number;
     singleLineInputText: string;
     singleLineOutputText: string;
@@ -17,11 +17,12 @@ interface DataSection {
 
 interface LogicSection {
     states?: Record<string, State>;
-    accept: string;
-    reject: string;
+    accept: State;
+    reject: State;
 }
 
 interface State {
+    stateName: string;
     command: string;
     transitions: Object<string, string>;
 }
