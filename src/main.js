@@ -95,12 +95,8 @@ q2] SCAN (0,q1), (1,q0)
             existingInputElement.id = inputID;
             singleLineDataDiv.appendChild(existingInputElement);
         }
+        singleLineCurrentState.textContent = `current state: ${machineState.currentState.stateName}`;
 
-        // Make sure it's a state
-        if (typeof machineState.currentState == "object") {
-            singleLineCurrentState.textContent =
-                machineState.currentState.stateName;
-        }
         const outputID = "singleLineOutput"; // Unique ID for the output element
         let existingOutputElement = document.getElementById(outputID);
         if (!existingOutputElement) {
@@ -153,8 +149,9 @@ q2] SCAN (0,q1), (1,q0)
                     : "red";
             document.getElementById("singleLineStep").style.display = "none";
         }
-        document.getElementById("singleLineCurrentState").textContent =
-            machineState.currentState.stateName;
+        document.getElementById(
+            "singleLineCurrentState"
+        ).textContent = `current state: ${machineState.currentState.stateName}`;
     }
     function onEdit() {
         // Make editor editable
