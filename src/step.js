@@ -22,6 +22,7 @@ export function step(sections, machineState) {
         switch (machineState.currentState.command) {
             // read right of input tape, then move head there. make sure to transition based on what was read
             case "SCAN":
+            case "SCAN RIGHT": 
                 scan(sections, machineState);
                 break;
             case "PRINT":

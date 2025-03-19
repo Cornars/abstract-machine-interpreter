@@ -2,18 +2,6 @@ import { create as createStack } from "./stack";
 import { create as createQueue } from "./queue";
 
 /// <reference path="../types/globals.d.ts" />
-const commands = [
-    "SCAN LEFT",
-    "SCAN RIGHT",
-    "SCAN",
-    "PRINT",
-    "READ([a-zA-Z0-9_]{1,})",
-    "WRITE([a-zA-Z0-9_]{1,})",
-    "RIGHT([a-zA-Z0-9_]{1,})",
-    "LEFT([a-zA-Z0-9_]{1,})",
-    "UP([a-zA-Z0-9_]{1,})",
-    "DOWN([a-zA-Z0-9_]{1,})",
-];
 
 /**
  *
@@ -43,9 +31,12 @@ const compileString = function (editorArray, sections, machineState) {
         if (!state) return;
         const stateSplit = state.split(" ");
         const stateName = stateSplit[0].replace("]", "");
-        // TODO: instead of stateSplit[1], set this as the string before the paranthesis
-        const command = stateSplit[1];
-        const transitionText = stateSplit.slice(2);
+        // Detect two-word commands
+        let command = stateSplit[1];
+        if (stateSplit.length > 2 && /^[A-Z]+$/.test(stateSplit[2])) {
+            command += " " + stateSplit[2]; // Combine two-word commands
+        }
+        const transitionText = stateSplit.slice(command.split(" ").length + 1);
         if (transitionText.length == 0)
             throw Error(`No transition states found for state ${state}`);
         const transitions = Object.fromEntries(
