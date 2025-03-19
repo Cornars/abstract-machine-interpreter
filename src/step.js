@@ -24,8 +24,12 @@ export function step(sections, machineState) {
             case "SCAN":
                 scan(sections, machineState);
                 break;
+            case "PRINT":
+                print(sections, machineState);
+                break;
             default:
-                console.log("INVALID COMMAND!");
+                console.log("INVALID COMMAND!:");
+                console.log(machineState.currentState.command);
                 break;
         }
     }
@@ -46,16 +50,29 @@ function scan(sections, machineState) {
     let scanRightValue =
         machineState.singleLineInputText[machineState.currentHeadIndex + 1];
     console.log("Value Scanned on Right: ", scanRightValue);
-    if (typeof machineState.currentState !== "string") {
-        let nextStateName =
-            machineState.currentState.transitions[scanRightValue];
-        let nextStateObject = sections.logicSection[nextStateName];
-        machineState.currentState = nextStateObject;
-    } else {
-        console.error("type of currentState is not string, REJECTING");
-        machineState.currentState = undefined;
-    }
+    let nextStateName = machineState.currentState.transitions[scanRightValue];
+    let nextStateObject = sections.logicSection[nextStateName];
+    machineState.currentState = nextStateObject;
     console.log("TRANSITION STATE: ", machineState.currentState);
     machineState.currentHeadIndex++;
     console.log("======== END OF SCAN ========");
+}
+/**
+ *
+ * @param {Sections} sections
+ * @param {MachineState} machineState
+ */
+function print(sections, machineState) {
+    console.log("======== START OF PRINT ========");
+    let characterToPrint = Object.keys(
+        machineState.currentState.transitions
+    )[0];
+    console.log("Char: ", characterToPrint);
+    let nextStateName = machineState.currentState.transitions[characterToPrint].trim();
+    console.log("Next State:", nextStateName)
+    let nextStateObject = sections.logicSection[nextStateName];
+    console.log("Next State Object: ", nextStateObject)
+    machineState.currentState = nextStateObject;
+    machineState.singleLineOutputText += characterToPrint
+    let printValue = console.log("======== END OF PRINT ========");
 }

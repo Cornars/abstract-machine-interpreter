@@ -14,10 +14,20 @@ async function main() {
         singleLineOutputText: "",
     };
     const parser = initializeParser();
-    const initialText = `.LOGIC
-q0] SCAN (0,q2), (2,accept)
-q1] SCAN (0,q0), (1,q2)
-q2] SCAN (0,q1), (1,q0)
+// SCAN alone
+//     const initialText = `.LOGIC
+// q0] SCAN (0,q2), (2,accept)
+// q1] SCAN (0,q0), (1,q2)
+// q2] SCAN (0,q1), (1,q0)
+// `;
+const initialText = `.LOGIC
+q0] SCAN (0,p2), (2,accept)
+q1] SCAN (0,p0), (1,p2)
+q2] SCAN (0,q1), (1,p0)
+
+p0] PRINT (B, q0)
+p1] PRINT (A, q1)
+p2] PRINT (C, q2)
 `;
     const myView = new EditorView({
         doc: initialText,
@@ -47,7 +57,6 @@ q2] SCAN (0,q1), (1,q0)
             parser.compileString(myView.state.doc.text, sections, machineState);
             errorHandlingArea.textContent = "Compile complete";
             errorHandlingArea.style.color = "green";
-
             // Make editor read-only
             myView.dispatch({
                 effects: StateEffect.reconfigure.of([
@@ -109,6 +118,13 @@ q2] SCAN (0,q1), (1,q0)
         existingOutputElement.textContent = machineState.singleLineOutputText;
         existingInputElement.textContent = machineState.singleLineInputText;
         updateHeadHighlight();
+        updateOutputString();
+    }
+
+    function updateOutputString(){
+        const outputID = "singleLineOutput"; // Unique ID for the output element
+        let existingOutputElement = document.getElementById(outputID);
+        existingOutputElement.textContent = machineState.singleLineOutputText;
     }
 
     function updateHeadHighlight() {
@@ -135,7 +151,7 @@ q2] SCAN (0,q1), (1,q0)
     function singleLineStep() {
         step(sections, machineState);
         updateHeadHighlight();
-
+        updateOutputString();
         console.log("machine's current state:", machineState.currentState);
         // Check for accept/reject state
         if (
@@ -187,6 +203,8 @@ q2] SCAN (0,q1), (1,q0)
         // @ts-ignore
         parser.compileString(myView.state.doc.text, sections, machineState);
         document.getElementById("singleLineEntry").textContent = "";
+        document.getElementById("singleLineOutput").textContent= "";
+        document.getElementById("singleLineCurrentState").textContent= "";
         document.getElementById("singleLineEntry").style.color = "black";
         document.getElementById("singleLineStep").style.display = "none";
         document.getElementById("resetButton").style.display = "none";
@@ -200,6 +218,7 @@ q2] SCAN (0,q1), (1,q0)
         machineState.currentHeadIndex = 0;
         machineState.currentState = undefined;
         machineState.singleLineInputText = "";
+        machineState.singleLineOutputText = "";
     }
     document.getElementById("resetButton").addEventListener("click", onReset);
     document
