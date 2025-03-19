@@ -3,35 +3,60 @@ import { EditorState, StateEffect } from "@codemirror/state";
 import { initializeParser } from "./parser";
 import { step } from "./step";
 
+/// <reference path="../types/globals.d.ts" />
+
 async function main() {
+    /** @type {MachineState} */
     let machineState = {
         currentState: undefined,
         currentHeadIndex: 0,
         singleLineInputText: "",
-        statusMachine: "toCompile",
+        singleLineOutputText: "",
     };
     const parser = initializeParser();
-    const initialText = `.LOGIC
-q0] SCAN (0,q2), (2,accept)
-q1] SCAN (0,q0), (1,q2)
-q2] SCAN (0,q1), (1,q0)
+// SCAN alone
+//     const initialText = `.LOGIC
+// q0] SCAN (0,q2), (2,accept)
+// q1] SCAN (0,q0), (1,q2)
+// q2] SCAN (0,q1), (1,q0)
+// `;
+const initialText = `.LOGIC
+q0] SCAN (0,p2), (2,accept)
+q1] SCAN (0,p0), (1,p2)
+q2] SCAN (0,q1), (1,p0)
+
+p0] PRINT (B, q0)
+p1] PRINT (A, q1)
+p2] PRINT (C, q2)
 `;
     const myView = new EditorView({
         doc: initialText,
         extensions: [basicSetup],
         parent: document.getElementById("text-editor"),
     });
+    /** @type {Sections} */
     let sections = {
         dataSection: {},
-        logicSection: {},
+        logicSection: {
+            accept: {
+                stateName: "accept",
+                command: "HALT",
+                transitions: undefined,
+            },
+            reject: {
+                stateName: "reject",
+                command: "HALT",
+                transitions: undefined,
+            },
+        },
     };
     function getTextFromEditor() {
         const errorHandlingArea = document.getElementById("errorHandlingArea");
         try {
+            // @ts-ignore
             parser.compileString(myView.state.doc.text, sections, machineState);
             errorHandlingArea.textContent = "Compile complete";
             errorHandlingArea.style.color = "green";
-
             // Make editor read-only
             myView.dispatch({
                 effects: StateEffect.reconfigure.of([
@@ -60,21 +85,46 @@ q2] SCAN (0,q1), (1,q0)
             return;
         }
 
-        const uniqueId = "singleLineEntry"; // Unique ID for the element
-
+        // @ts-ignore
         machineState.singleLineInputText = `#${inputElement.value.trim()}#`;
-        let existingElement = document.getElementById(uniqueId);
 
-        if (!existingElement) {
+        const inputID = "singleLineEntry"; // Unique ID for the element
+        let singleLineCurrentState = document.getElementById(
+            "singleLineCurrentState"
+        );
+        if (!singleLineCurrentState) {
+            singleLineCurrentState = document.createElement("div");
+            singleLineCurrentState.id = "singleLineCurrentState";
+            singleLineDataDiv.appendChild(singleLineCurrentState);
+        }
+        let existingInputElement = document.getElementById(inputID);
+        if (!existingInputElement) {
             // If the element does not exist, create it
-            existingElement = document.createElement("div");
-            existingElement.id = uniqueId;
-            singleLineDataDiv.appendChild(existingElement);
+            existingInputElement = document.createElement("div");
+            existingInputElement.id = inputID;
+            singleLineDataDiv.appendChild(existingInputElement);
+        }
+        singleLineCurrentState.textContent = `current state: ${machineState.currentState.stateName}`;
+
+        const outputID = "singleLineOutput"; // Unique ID for the output element
+        let existingOutputElement = document.getElementById(outputID);
+        if (!existingOutputElement) {
+            // If the element does not exist, create it
+            existingOutputElement = document.createElement("div");
+            existingOutputElement.id = outputID;
+            singleLineDataDiv.appendChild(existingOutputElement);
         }
 
-        // Update the existing element's content
-        existingElement.textContent = machineState.singleLineInputText;
+        existingOutputElement.textContent = machineState.singleLineOutputText;
+        existingInputElement.textContent = machineState.singleLineInputText;
         updateHeadHighlight();
+        updateOutputString();
+    }
+
+    function updateOutputString(){
+        const outputID = "singleLineOutput"; // Unique ID for the output element
+        let existingOutputElement = document.getElementById(outputID);
+        existingOutputElement.textContent = machineState.singleLineOutputText;
     }
 
     function updateHeadHighlight() {
@@ -101,18 +151,23 @@ q2] SCAN (0,q1), (1,q0)
     function singleLineStep() {
         step(sections, machineState);
         updateHeadHighlight();
-
+        updateOutputString();
         console.log("machine's current state:", machineState.currentState);
         // Check for accept/reject state
         if (
-            machineState.currentState === "ACCEPT" ||
-            machineState.currentState === "REJECT"
+            machineState.currentState.stateName === "accept" ||
+            machineState.currentState.stateName === "reject"
         ) {
             const singleLineEntry = document.getElementById("singleLineEntry");
             singleLineEntry.style.color =
-                machineState.currentState === "ACCEPT" ? "green" : "red";
+                machineState.currentState.stateName === "accept"
+                    ? "green"
+                    : "red";
             document.getElementById("singleLineStep").style.display = "none";
         }
+        document.getElementById(
+            "singleLineCurrentState"
+        ).textContent = `current state: ${machineState.currentState.stateName}`;
     }
     function onEdit() {
         // Make editor editable
@@ -145,11 +200,15 @@ q2] SCAN (0,q1), (1,q0)
 
     function onReset() {
         resetData();
+        // @ts-ignore
         parser.compileString(myView.state.doc.text, sections, machineState);
         document.getElementById("singleLineEntry").textContent = "";
+        document.getElementById("singleLineOutput").textContent= "";
+        document.getElementById("singleLineCurrentState").textContent= "";
         document.getElementById("singleLineEntry").style.color = "black";
         document.getElementById("singleLineStep").style.display = "none";
         document.getElementById("resetButton").style.display = "none";
+        // @ts-ignore
         document.getElementById("singleLineStep").disabled = false;
         document.getElementById("singleLineStart").style.display =
             "inline-block";
@@ -159,6 +218,7 @@ q2] SCAN (0,q1), (1,q0)
         machineState.currentHeadIndex = 0;
         machineState.currentState = undefined;
         machineState.singleLineInputText = "";
+        machineState.singleLineOutputText = "";
     }
     document.getElementById("resetButton").addEventListener("click", onReset);
     document

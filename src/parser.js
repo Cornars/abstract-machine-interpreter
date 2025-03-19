@@ -1,14 +1,7 @@
 import { create as createStack } from "./stack";
 import { create as createQueue } from "./queue";
-/**
- * Compiles the string. returns an Object with that looks like:
- * ```javascript
- * const sections = {
- *   data: {},
- *   logic: {},
- * };
- * ```
- */
+
+/// <reference path="../types/globals.d.ts" />
 const commands = [
     "SCAN LEFT",
     "SCAN RIGHT",
@@ -25,7 +18,7 @@ const commands = [
 /**
  *
  * @param {Array} editorArray - should be an array from myView.state.doc.text
- * @param {Object} sections
+ * @param {Sections} sections
  */
 const compileString = function (editorArray, sections, machineState) {
     // I worked on this code thinking it'll be a big text :(
@@ -50,6 +43,7 @@ const compileString = function (editorArray, sections, machineState) {
         if (!state) return;
         const stateSplit = state.split(" ");
         const stateName = stateSplit[0].replace("]", "");
+        // TODO: instead of stateSplit[1], set this as the string before the paranthesis
         const command = stateSplit[1];
         const transitionText = stateSplit.slice(2);
         if (transitionText.length == 0)
@@ -61,15 +55,13 @@ const compileString = function (editorArray, sections, machineState) {
                 .map((pair) => pair.replace(/[()]/g, "").split(",")) // Clean and split
         );
         sections.logicSection[stateName] = {};
+        sections.logicSection[stateName].stateName = stateName;
         sections.logicSection[stateName].command = command;
         sections.logicSection[stateName].transitions = transitions;
         // set start state
         if (index == 0)
             machineState.currentState = sections.logicSection[stateName];
     });
-    sections.logicSection["accept"] = "ACCEPT";
-    sections.logicSection["reject"] = "REJECT";
-    machineState.statusMachine = "compiled";
 };
 
 export function initializeParser() {
