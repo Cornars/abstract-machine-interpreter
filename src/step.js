@@ -28,6 +28,9 @@ export function step(sections, machineState) {
             case "PRINT":
                 print(sections, machineState);
                 break;
+            case "SCAN LEFT":
+                scan_left(sections, machineState);
+                break;
             default:
                 console.log("INVALID COMMAND!:");
                 console.log(machineState.currentState.command);
@@ -51,7 +54,7 @@ function scan(sections, machineState) {
     let scanRightValue =
         machineState.singleLineInputText[machineState.currentHeadIndex + 1];
     console.log("Value Scanned on Right: ", scanRightValue);
-    let nextStateName = machineState.currentState.transitions[scanRightValue];
+    let nextStateName = machineState.currentState.transitions[scanRightValue].trim();
     let nextStateObject = sections.logicSection[nextStateName];
     machineState.currentState = nextStateObject;
     console.log("TRANSITION STATE: ", machineState.currentState);
@@ -75,5 +78,22 @@ function print(sections, machineState) {
     console.log("Next State Object: ", nextStateObject)
     machineState.currentState = nextStateObject;
     machineState.singleLineOutputText += characterToPrint
-    let printValue = console.log("======== END OF PRINT ========");
+    console.log("======== END OF PRINT ========");
+}
+/**
+ *
+ * @param {Sections} sections
+ * @param {MachineState} machineState
+ */
+function scan_left(sections, machineState) {
+    console.log("======== START OF SCAN ========");
+    let scanLeftValue =
+        machineState.singleLineInputText[machineState.currentHeadIndex - 1];
+    console.log("Value Scanned on Left: ", scanLeftValue);
+    let nextStateName = machineState.currentState.transitions[scanLeftValue];
+    let nextStateObject = sections.logicSection[nextStateName];
+    machineState.currentState = nextStateObject;
+    console.log("TRANSITION STATE: ", machineState.currentState);
+    machineState.currentHeadIndex--;
+    console.log("======== END OF SCAN ========");
 }
