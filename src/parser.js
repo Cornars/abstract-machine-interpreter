@@ -46,8 +46,8 @@ const compileString = function (editorArray, sections, machineState) {
                 .map((pair) => pair.replace(/[()]/g, "").split(",")) // Clean and split
         );
         sections.logicSection[stateName] = {};
-        sections.logicSection[stateName].stateName = stateName;
-        sections.logicSection[stateName].command = command;
+        sections.logicSection[stateName].stateName = stateName.trim();
+        sections.logicSection[stateName].command = command.trim();
         sections.logicSection[stateName].transitions = transitions;
         // set start state
         if (index == 0)

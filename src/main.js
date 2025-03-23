@@ -14,21 +14,30 @@ async function main() {
         singleLineOutputText: "",
     };
     const parser = initializeParser();
+// RANDOM:
+const initialText = `.LOGIC
+q0] SCAN (0,p2), (1, q1), (2,accept)
+q1] SCAN (0,p0), (1,p2), (2, q2)
+q2] SCAN LEFT (0,q1), (1,p0), (2, q0)
+
+p0] PRINT (B, q0)
+p1] PRINT (A, q1)
+p2] PRINT (C, q2)`
 // SCAN alone
 //     const initialText = `.LOGIC
 // q0] SCAN (0,q2), (2,accept)
 // q1] SCAN (0,q0), (1,q2)
 // q2] SCAN (0,q1), (1,q0)
 // `;
-const initialText = `.LOGIC
-q0] SCAN (0,p2), (2,accept)
-q1] SCAN (0,p0), (1,p2)
-q2] SCAN (0,q1), (1,p0)
+// const initialText = `.LOGIC
+// q0] SCAN (0,p2), (2,accept)
+// q1] SCAN (0,p0), (1,p2)
+// q2] SCAN (0,q1), (1,p0)
 
-p0] PRINT (B, q0)
-p1] PRINT (A, q1)
-p2] PRINT (C, q2)
-`;
+// p0] PRINT (B, q0)
+// p1] PRINT (A, q1)
+// p2] PRINT (C, q2)
+// `;
     const myView = new EditorView({
         doc: initialText,
         extensions: [basicSetup],
@@ -55,6 +64,7 @@ p2] PRINT (C, q2)
         try {
             // @ts-ignore
             parser.compileString(myView.state.doc.text, sections, machineState);
+            console.log("COMPILED:", sections, machineState)
             errorHandlingArea.textContent = "Compile complete";
             errorHandlingArea.style.color = "green";
             // Make editor read-only
