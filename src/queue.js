@@ -16,6 +16,9 @@ export function create() {
         printData() {
             console.log(queue);
         },
+        getData() {
+            return queue;
+        },
     };
     return publicAPI;
 }

@@ -14,8 +14,11 @@ export function create() {
             return stack[0];
         },
         printData() {
-            console.log(stack)
-        }
+            console.log(stack);
+        },
+        getData() {
+            return stack;
+        },
     };
     return publicAPI;
 }

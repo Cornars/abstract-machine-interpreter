@@ -15,14 +15,14 @@ async function main() {
     };
     const parser = initializeParser();
     // RANDOM:
-//     const initialText = `.LOGIC
-// q0] SCAN (0,p2), (1, q1), (2,accept)
-// q1] SCAN (0,p0), (1,p2), (2, q2)
-// q2] SCAN LEFT (0,q1), (1,p0), (2, q0)
+    //     const initialText = `.LOGIC
+    // q0] SCAN (0,p2), (1, q1), (2,accept)
+    // q1] SCAN (0,p0), (1,p2), (2, q2)
+    // q2] SCAN LEFT (0,q1), (1,p0), (2, q0)
 
-// p0] PRINT (B, q0)
-// p1] PRINT (A, q1)
-// p2] PRINT (C, q2)`;
+    // p0] PRINT (B, q0)
+    // p1] PRINT (A, q1)
+    // p2] PRINT (C, q2)`;
     // SCAN alone
     //     const initialText = `.LOGIC
     // q0] SCAN (0,q2), (2,accept)
@@ -141,6 +141,26 @@ F] READ(S1) (#,accept)
 
         existingOutputElement.textContent = machineState.singleLineOutputText;
         existingInputElement.textContent = machineState.singleLineInputText;
+
+        // Create sections for each key in sections.dataSection
+        if (sections && sections.dataSection) {
+            Object.keys(sections.dataSection).forEach((key) => {
+                const sectionID = `section-${key}`;
+                console.log("section-id: ", sectionID);
+                let sectionElement = document.getElementById(sectionID);
+
+                if (!sectionElement) {
+                    sectionElement = document.createElement("div");
+                    sectionElement.id = sectionID;
+                    singleLineDataDiv.appendChild(sectionElement);
+                }
+
+                // Set text content in one line
+                sectionElement.textContent = `${key}: ${sections.dataSection[
+                    key
+                ].getData()}`;
+            });
+        }
         updateHeadHighlight();
         updateOutputString();
     }
@@ -173,10 +193,11 @@ F] READ(S1) (#,accept)
         document.getElementById("singleLineEntry").innerHTML = highlightedText;
     }
     function singleLineStep() {
-        console.group("Stepping")
+        console.group("Stepping");
         step(sections, machineState);
         updateHeadHighlight();
         updateOutputString();
+        updateDataTypes();
         console.log("machine's current state:", machineState.currentState);
         // Check for accept/reject state
         if (
@@ -226,6 +247,8 @@ F] READ(S1) (#,accept)
 
     function onReset() {
         resetData();
+        // removes all the section-ids
+        document.querySelectorAll("[id^='section-']").forEach((element) => element.remove());
         // @ts-ignore
         parser.compileString(myView.state.doc.text, sections, machineState);
         document.getElementById("singleLineEntry").textContent = "";
@@ -245,6 +268,28 @@ F] READ(S1) (#,accept)
         machineState.currentState = undefined;
         machineState.singleLineInputText = "";
         machineState.singleLineOutputText = "";
+        sections.dataSection = {};
+    }
+    function updateDataTypes() {
+        if (sections && sections.dataSection) {
+            const singleLineDataDiv = document.getElementById("singleLineData");
+            Object.keys(sections.dataSection).forEach((key) => {
+                const sectionID = `section-${key}`;
+                let sectionElement = document.getElementById(sectionID);
+                const newData = `${key}: ${sections.dataSection[
+                    key
+                ].getData()}`;
+
+                if (!sectionElement) {
+                    sectionElement = document.createElement("div");
+                    sectionElement.id = sectionID;
+                    sectionElement.textContent = newData;
+                    singleLineDataDiv.appendChild(sectionElement);
+                } else if (sectionElement.textContent !== newData) {
+                    sectionElement.textContent = newData; // Update only if changed
+                }
+            });
+        }
     }
     document.getElementById("resetButton").addEventListener("click", onReset);
     document
