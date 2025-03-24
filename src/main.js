@@ -14,30 +14,42 @@ async function main() {
         singleLineOutputText: "",
     };
     const parser = initializeParser();
-// RANDOM:
-const initialText = `.LOGIC
-q0] SCAN (0,p2), (1, q1), (2,accept)
-q1] SCAN (0,p0), (1,p2), (2, q2)
-q2] SCAN LEFT (0,q1), (1,p0), (2, q0)
-
-p0] PRINT (B, q0)
-p1] PRINT (A, q1)
-p2] PRINT (C, q2)`
-// SCAN alone
+    // RANDOM:
 //     const initialText = `.LOGIC
-// q0] SCAN (0,q2), (2,accept)
-// q1] SCAN (0,q0), (1,q2)
-// q2] SCAN (0,q1), (1,q0)
-// `;
-// const initialText = `.LOGIC
-// q0] SCAN (0,p2), (2,accept)
-// q1] SCAN (0,p0), (1,p2)
-// q2] SCAN (0,q1), (1,p0)
+// q0] SCAN (0,p2), (1, q1), (2,accept)
+// q1] SCAN (0,p0), (1,p2), (2, q2)
+// q2] SCAN LEFT (0,q1), (1,p0), (2, q0)
 
 // p0] PRINT (B, q0)
 // p1] PRINT (A, q1)
-// p2] PRINT (C, q2)
-// `;
+// p2] PRINT (C, q2)`;
+    // SCAN alone
+    //     const initialText = `.LOGIC
+    // q0] SCAN (0,q2), (2,accept)
+    // q1] SCAN (0,q0), (1,q2)
+    // q2] SCAN (0,q1), (1,q0)
+    // `;
+    // const initialText = `.LOGIC
+    // q0] SCAN (0,p2), (2,accept)
+    // q1] SCAN (0,p0), (1,p2)
+    // q2] SCAN (0,q1), (1,p0)
+
+    // p0] PRINT (B, q0)
+    // p1] PRINT (A, q1)
+    // p2] PRINT (C, q2)
+    // `;
+
+    const initialText = `
+.DATA
+STACK S1
+.LOGIC
+A] WRITE(S1) (#,B)
+B] SCAN (0,C), (1,D)
+C] WRITE(S1) (#,B)
+D] READ(S1) (#,E)
+E] SCAN (1,D), (#,F)
+F] READ(S1) (#,accept)
+                `;
     const myView = new EditorView({
         doc: initialText,
         extensions: [basicSetup],
@@ -60,11 +72,12 @@ p2] PRINT (C, q2)`
         },
     };
     function getTextFromEditor() {
+        console.group("Starting Compilation...");
         const errorHandlingArea = document.getElementById("errorHandlingArea");
         try {
             // @ts-ignore
             parser.compileString(myView.state.doc.text, sections, machineState);
-            console.log("COMPILED:", sections, machineState)
+            console.log("COMPILED:", sections, machineState);
             errorHandlingArea.textContent = "Compile complete";
             errorHandlingArea.style.color = "green";
             // Make editor read-only
@@ -84,6 +97,7 @@ p2] PRINT (C, q2)`
             errorHandlingArea.textContent = `Compile error: ${error.message}`;
             errorHandlingArea.style.color = "red";
         }
+        console.groupEnd();
     }
 
     function getSingleLineInput() {
@@ -131,7 +145,7 @@ p2] PRINT (C, q2)`
         updateOutputString();
     }
 
-    function updateOutputString(){
+    function updateOutputString() {
         const outputID = "singleLineOutput"; // Unique ID for the output element
         let existingOutputElement = document.getElementById(outputID);
         existingOutputElement.textContent = machineState.singleLineOutputText;
@@ -159,6 +173,7 @@ p2] PRINT (C, q2)`
         document.getElementById("singleLineEntry").innerHTML = highlightedText;
     }
     function singleLineStep() {
+        console.group("Stepping")
         step(sections, machineState);
         updateHeadHighlight();
         updateOutputString();
@@ -178,6 +193,7 @@ p2] PRINT (C, q2)`
         document.getElementById(
             "singleLineCurrentState"
         ).textContent = `current state: ${machineState.currentState.stateName}`;
+        console.groupEnd();
     }
     function onEdit() {
         // Make editor editable
@@ -213,8 +229,8 @@ p2] PRINT (C, q2)`
         // @ts-ignore
         parser.compileString(myView.state.doc.text, sections, machineState);
         document.getElementById("singleLineEntry").textContent = "";
-        document.getElementById("singleLineOutput").textContent= "";
-        document.getElementById("singleLineCurrentState").textContent= "";
+        document.getElementById("singleLineOutput").textContent = "";
+        document.getElementById("singleLineCurrentState").textContent = "";
         document.getElementById("singleLineEntry").style.color = "black";
         document.getElementById("singleLineStep").style.display = "none";
         document.getElementById("resetButton").style.display = "none";

@@ -18,24 +18,33 @@
  */
 export function step(sections, machineState) {
     // basedo on the input, what is the next state we are going to
-    if (typeof machineState.currentState !== "string") {
-        switch (machineState.currentState.command) {
-            // read right of input tape, then move head there. make sure to transition based on what was read
-            case "SCAN":
-            case "SCAN RIGHT": 
-                scan(sections, machineState);
-                break;
-            case "PRINT":
-                print(sections, machineState);
-                break;
-            case "SCAN LEFT":
-                scan_left(sections, machineState);
-                break;
-            default:
-                console.log("INVALID COMMAND!:");
-                console.log(machineState.currentState.command);
-                break;
-        }
+    const command = machineState.currentState.command
+    if(command.startsWith("WRITE(")){
+        console.log("WRITE HAS BEEN CALLED")
+        const dataVariableName = command.slice(6, -1)
+        console.log(dataVariableName)
+    }
+    // if read:
+    if(command.startsWith("READ(")){
+        console.log("READ HAS BEEN CALLED")
+        console.log(command.slice(5, -1))
+    }
+    switch (command) {
+        // read right of input tape, then move head there. make sure to transition based on what was read
+        case "SCAN":
+        case "SCAN RIGHT":
+            scan(sections, machineState);
+            break;
+        case "PRINT":
+            print(sections, machineState);
+            break;
+        case "SCAN LEFT":
+            scan_left(sections, machineState);
+            break;
+        default:
+            console.log("INVALID COMMAND!, or it got parsed earlier pa lol:");
+            console.log(command);
+            break;
     }
 
     // No state it got transitioned to means it should be rejected
@@ -54,7 +63,8 @@ function scan(sections, machineState) {
     let scanRightValue =
         machineState.singleLineInputText[machineState.currentHeadIndex + 1];
     console.log("Value Scanned on Right: ", scanRightValue);
-    let nextStateName = machineState.currentState.transitions[scanRightValue].trim();
+    let nextStateName =
+        machineState.currentState.transitions[scanRightValue].trim();
     let nextStateObject = sections.logicSection[nextStateName];
     machineState.currentState = nextStateObject;
     console.log("TRANSITION STATE: ", machineState.currentState);
@@ -72,12 +82,13 @@ function print(sections, machineState) {
         machineState.currentState.transitions
     )[0];
     console.log("Char: ", characterToPrint);
-    let nextStateName = machineState.currentState.transitions[characterToPrint].trim();
-    console.log("Next State:", nextStateName)
+    let nextStateName =
+        machineState.currentState.transitions[characterToPrint].trim();
+    console.log("Next State:", nextStateName);
     let nextStateObject = sections.logicSection[nextStateName];
-    console.log("Next State Object: ", nextStateObject)
+    console.log("Next State Object: ", nextStateObject);
     machineState.currentState = nextStateObject;
-    machineState.singleLineOutputText += characterToPrint
+    machineState.singleLineOutputText += characterToPrint;
     console.log("======== END OF PRINT ========");
 }
 /**
@@ -96,4 +107,8 @@ function scan_left(sections, machineState) {
     console.log("TRANSITION STATE: ", machineState.currentState);
     machineState.currentHeadIndex--;
     console.log("======== END OF SCAN ========");
+}
+
+function read(sections, machineState, dataVariable){
+
 }
