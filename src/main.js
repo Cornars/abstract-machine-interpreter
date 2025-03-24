@@ -12,6 +12,7 @@ async function main() {
         currentHeadIndex: 0,
         singleLineInputText: "",
         singleLineOutputText: "",
+        isTape: false,
     };
     const parser = initializeParser();
     // RANDOM:
@@ -156,6 +157,7 @@ F] READ(S1) (#,accept)
                 }
 
                 // Set text content in one line
+                console.log("sections datasecion:", sections.dataSection[key])
                 sectionElement.textContent = `${key}: ${sections.dataSection[
                     key
                 ].getData()}`;

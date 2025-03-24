@@ -157,4 +157,14 @@ function write(sections, machineState, dataVariableName) {
     console.groupEnd();
 }
 
+/**
+ * @param {Sections} sections
+ * @param {MachineState} machineState
+ * @param {String} tapeName
+ */
+function right(sections, machineState, tapeName) {
+    console.group("Starting RIGHT");
+
+    console.groupEnd();
+}
 // TODO: maybe add internal functions that does the transitioning for us hehe

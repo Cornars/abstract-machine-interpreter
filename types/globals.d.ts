@@ -1,5 +1,6 @@
 declare module "global-utils" {
     export function create(): Queue;
+    export function create(): Tape;
 }
 
 interface MachineState {
@@ -7,6 +8,8 @@ interface MachineState {
     currentHeadIndex: number;
     singleLineInputText: string;
     singleLineOutputText: string;
+    tape?: Tape;
+    isTape: boolean;
 }
 
 interface Sections {
@@ -40,5 +43,11 @@ interface Stack {
     enqueue(value: string): void;
     dequeue(): string;
     getFirstElement(): string;
+}
+
+interface Tape{
+    intializeTape(value: string);
+    moveLeft() : string;
+    moveRight() : string;
 }
 
