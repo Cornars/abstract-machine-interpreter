@@ -18,16 +18,18 @@
  */
 export function step(sections, machineState) {
     // basedo on the input, what is the next state we are going to
-    const command = machineState.currentState.command
-    if(command.startsWith("WRITE(")){
-        console.log("WRITE HAS BEEN CALLED")
-        const dataVariableName = command.slice(6, -1)
-        console.log(dataVariableName)
+    const command = machineState.currentState.command;
+    if (command.startsWith("WRITE(")) {
+        console.log("WRITE HAS BEEN CALLED");
+        const dataVariableName = command.slice(6, -1);
+        console.log(dataVariableName);
+        write(sections, machineState, dataVariableName)
     }
     // if read:
-    if(command.startsWith("READ(")){
-        console.log("READ HAS BEEN CALLED")
-        console.log(command.slice(5, -1))
+    if (command.startsWith("READ(")) {
+        console.log("READ HAS BEEN CALLED");
+        const dataVariableName = command.slice(5, -1);
+        read(sections, machineState, dataVariableName)
     }
     switch (command) {
         // read right of input tape, then move head there. make sure to transition based on what was read
@@ -59,7 +61,7 @@ export function step(sections, machineState) {
  * @param {MachineState} machineState
  */
 function scan(sections, machineState) {
-    console.log("======== START OF SCAN ========");
+    console.group("Starting Scan (SCAN RIGHT)");
     let scanRightValue =
         machineState.singleLineInputText[machineState.currentHeadIndex + 1];
     console.log("Value Scanned on Right: ", scanRightValue);
@@ -69,7 +71,7 @@ function scan(sections, machineState) {
     machineState.currentState = nextStateObject;
     console.log("TRANSITION STATE: ", machineState.currentState);
     machineState.currentHeadIndex++;
-    console.log("======== END OF SCAN ========");
+    console.groupEnd();
 }
 /**
  *
@@ -77,7 +79,7 @@ function scan(sections, machineState) {
  * @param {MachineState} machineState
  */
 function print(sections, machineState) {
-    console.log("======== START OF PRINT ========");
+    console.group("Starting Print");
     let characterToPrint = Object.keys(
         machineState.currentState.transitions
     )[0];
@@ -89,7 +91,7 @@ function print(sections, machineState) {
     console.log("Next State Object: ", nextStateObject);
     machineState.currentState = nextStateObject;
     machineState.singleLineOutputText += characterToPrint;
-    console.log("======== END OF PRINT ========");
+    console.groupEnd();
 }
 /**
  *
@@ -97,7 +99,7 @@ function print(sections, machineState) {
  * @param {MachineState} machineState
  */
 function scan_left(sections, machineState) {
-    console.log("======== START OF SCAN ========");
+    console.group("Starting SCAN LEFT");
     let scanLeftValue =
         machineState.singleLineInputText[machineState.currentHeadIndex - 1];
     console.log("Value Scanned on Left: ", scanLeftValue);
@@ -106,9 +108,53 @@ function scan_left(sections, machineState) {
     machineState.currentState = nextStateObject;
     console.log("TRANSITION STATE: ", machineState.currentState);
     machineState.currentHeadIndex--;
-    console.log("======== END OF SCAN ========");
+    console.groupEnd();
 }
 
-function read(sections, machineState, dataVariable){
-
+/**
+ *
+ * @param {Sections} sections
+ * @param {MachineState} machineState
+ * @param {String} dataVariableName
+ * TODO: add tape here
+ */
+function read(sections, machineState, dataVariableName) {
+    // we want to read the value we pop, and actually delete it from the list as well
+    console.group("Starting READ:")
+    /** @type {Queue | Stack} */
+    const dataVariable = sections.dataSection[dataVariableName]
+    const readValue = dataVariable.dequeue();
+    let nextStateName = machineState.currentState.transitions[readValue];
+    let nextStateObject = sections.logicSection[nextStateName];
+    machineState.currentState = nextStateObject;
+    console.log("TRANSITION STATE: ", machineState.currentState);
+    console.log("DATA NOW: ")
+    sections.dataSection[dataVariableName].printData()
+    console.groupEnd();
 }
+
+/**
+ * @param {Sections} sections
+ * @param {MachineState} machineState
+ * @param {String} dataVariableName
+ */
+function write(sections, machineState, dataVariableName) {
+    console.group("Starting WRITE");
+    let characterToWrite = Object.keys(
+        machineState.currentState.transitions
+    )[0];
+    console.log("Char: ", characterToWrite);
+    let nextStateName =
+        machineState.currentState.transitions[characterToWrite].trim();
+    console.log("Next State:", nextStateName);
+    let nextStateObject = sections.logicSection[nextStateName];
+    console.log("Next State Object: ", nextStateObject);
+    machineState.currentState = nextStateObject;
+    /** @type {Queue | Stack} */
+    sections.dataSection[dataVariableName].enqueue(characterToWrite)
+    console.log("DATA NOW: ")
+    sections.dataSection[dataVariableName].printData()
+    console.groupEnd();
+}
+
+// TODO: maybe add internal functions that does the transitioning for us hehe

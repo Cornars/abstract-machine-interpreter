@@ -1,3 +1,7 @@
+declare module "global-utils" {
+    export function create(): Queue;
+}
+
 interface MachineState {
     currentState: State;
     currentHeadIndex: number;
@@ -26,3 +30,15 @@ interface State {
     command: string;
     transitions: Object<string, string>;
 }
+
+interface Queue {
+    enqueue(value: string): void;
+    dequeue(): string;
+    getFirstElement(): string;
+}
+interface Stack {
+    enqueue(value: string): void;
+    dequeue(): string;
+    getFirstElement(): string;
+}
+
