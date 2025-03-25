@@ -28,11 +28,11 @@ export function step(sections, machineState) {
     // if read:
     if (command.startsWith("READ(")) {
         console.log("READ HAS BEEN CALLED");
-        const dataVariableName = command.slice(5, -1);
+        const dataVariableName = command.slice(5, -1).trim();
         read(sections, machineState, dataVariableName);
     }
     if (command.startsWith("RIGHT(")) {
-        const dataVariableName = command.slice(6, -1);
+        const dataVariableName = command.slice(6, -1).trim();
         right(sections, machineState, dataVariableName);
     }
     if (command.startsWith("LEFT(")) {
@@ -175,9 +175,9 @@ function right(sections, machineState, dataVariableName) {
     for (const key of Object.keys(machineState.currentState.transitions)){
         const [expectedHead ,rewriteValue] = key.split("/")
         console.log(rightReadValue, expectedHead)
-        if (rightReadValue === expectedHead){
+        if (rightReadValue === expectedHead.trim()){
             console.log("HIT!")
-            machineState.singleLineInputText.rewritePointer(rewriteValue);
+            machineState.singleLineInputText.rewritePointer(rewriteValue.trim());
             console.log(machineState.currentState)
             let nextState = machineState.currentState.transitions[key]
             machineState.currentState = sections.logicSection[nextState]
@@ -207,9 +207,9 @@ function left(sections, machineState, dataVariableName) {
     for (const key of Object.keys(machineState.currentState.transitions)){
         const [expectedHead ,rewriteValue] = key.split("/")
         console.log(leftReadValue, expectedHead)
-        if (leftReadValue === expectedHead){
+        if (leftReadValue === expectedHead.trim()){
             console.log("HIT!")
-            machineState.singleLineInputText.rewritePointer(rewriteValue);
+            machineState.singleLineInputText.rewritePointer(rewriteValue.trim());
             let nextState = machineState.currentState.transitions[key]
             machineState.currentState = sections.logicSection[nextState]
             isRewritten = true
