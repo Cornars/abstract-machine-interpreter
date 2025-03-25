@@ -63,7 +63,8 @@ export function getTextFromEditor() {
     try {
         // @ts-ignore
         parser.compileString(myView.state.doc.text, sections, machineState);
-        console.log("COMPILED:", sections, machineState);
+        console.table(sections.logicSection)
+        console.log(machineState)
         errorHandlingArea.textContent = "Compile complete";
         errorHandlingArea.style.color = "green";
         // Make editor read-only

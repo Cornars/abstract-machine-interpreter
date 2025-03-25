@@ -53,5 +53,6 @@ interface Tape{
     getData(): string;
     getPointerIndex(): number;
     resetTape(): void;
+    rewritePointer(rewriteValue: string): void;
 }
 

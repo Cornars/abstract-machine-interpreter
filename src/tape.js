@@ -41,6 +41,9 @@ export function create() {
         if (isRewrite) positiveArray[pointerIndex] = rewriteValue;
         return readInput
     }
+    function rewritePointer(rewriteValue){
+        positiveArray[pointerIndex] = rewriteValue
+    }
 
     return {
         initializeTape(inputString) {
@@ -68,7 +71,7 @@ export function create() {
             positiveArray.length = 0
             positiveArray.push("#")
 
-        }
-
+        },
+        rewritePointer,
     };
 }
