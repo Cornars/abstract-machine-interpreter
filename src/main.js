@@ -3,7 +3,6 @@ import {
     onEdit,
     onStart,
     singleLineStep,
-    getSingleLineInput,
     getTextFromEditor,
 } from "./eventHandlers.js";
 
@@ -18,9 +17,6 @@ async function main() {
         .getElementById("singleLineStep")
         .addEventListener("click", singleLineStep);
 
-    document
-        .getElementById("singleLineStart")
-        .addEventListener("click", getSingleLineInput);
     // Attach event listener to the compile button
     document
         .getElementById("compileButton")

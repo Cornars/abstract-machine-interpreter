@@ -7,23 +7,24 @@ export function updateUI() {
     updateOutputString();
     updateHeadHighlight();
 }
+
 function updateOutputString() {
     document.getElementById("singleLineOutput").textContent =
         machineState.singleLineOutputText;
 }
 
 function updateHeadHighlight() {
-    if (machineState.currentHeadIndex < 0) machineState.currentHeadIndex = 0;
-    if (
-        machineState.currentHeadIndex >= machineState.singleLineInputText.length
-    )
-        machineState.currentHeadIndex =
-            machineState.singleLineInputText.length - 1;
+    // if (machineState.currentHeadIndex < 0) machineState.currentHeadIndex = 0;
+    // if (
+    //     machineState.currentHeadIndex >= machineState.singleLineInputText.length
+    // )
+    //     machineState.currentHeadIndex =
+    //         machineState.singleLineInputText.length - 1;
 
-    const highlightedText = machineState.singleLineInputText
+    const highlightedText = machineState.singleLineInputText.getDataString()
         .split("")
         .map((char, index) =>
-            index === machineState.currentHeadIndex
+            index === machineState.singleLineInputText.getPointerIndex()
                 ? `<span style="color: red;">${char}</span>`
                 : char
         )

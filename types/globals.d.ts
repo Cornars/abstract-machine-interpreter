@@ -6,7 +6,7 @@ declare module "global-utils" {
 interface MachineState {
     currentState: State;
     currentHeadIndex: number;
-    singleLineInputText: string;
+    singleLineInputText: Tape;
     singleLineOutputText: string;
     tape?: Tape;
     isTape: boolean;
@@ -46,8 +46,11 @@ interface Stack {
 }
 
 interface Tape{
-    intializeTape(value: string);
-    moveLeft() : string;
-    moveRight() : string;
+    initializeTape:(inputString: string) => void;
+    moveLeft: (isRead: boolean, rewriteValue?: string, ) => string;
+    moveRight: (isRead: boolean, rewriteValue?: string, ) => string;
+    printData(): void;
+    getDataString(): string;
+    getPointerIndex(): number;
 }
 

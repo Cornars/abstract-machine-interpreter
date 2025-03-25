@@ -1,5 +1,9 @@
 /// <reference path="../types/globals.d.ts" />
 
+/**
+ * 
+ * @returns {Tape}
+ */
 export function create() {
     let pointerIndex = 0;
     const positiveArray = ["#"];
@@ -8,13 +12,21 @@ export function create() {
         return positiveArray;
     }
 
-    function moveRight(rewriteValue) {
+    /**
+     * 
+     * @param {String} rewriteValue 
+     * @param {boolean} isRewrite = false 
+     * @returns {String}
+     */
+    function moveRight(isRewrite, rewriteValue = "#") {
         pointerIndex++;
         if (pointerIndex >= positiveArray.length) {
             positiveArray.push("#");
         }
         let readInput = positiveArray[pointerIndex]
-        positiveArray[pointerIndex] = rewriteValue;
+        if (isRewrite){
+            positiveArray[pointerIndex] = rewriteValue;
+        }
         return readInput
     }
 
@@ -43,9 +55,11 @@ export function create() {
         printData() {
             console.log(getTapeArray().join(""));
         },
-        getDataString() {},
-        getData() {
-            return getTapeArray();
+        getDataString() {
+            return positiveArray.join("");
         },
+        getPointerIndex() {
+            return pointerIndex;
+        }
     };
 }

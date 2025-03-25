@@ -5,11 +5,12 @@ import { editor as myView } from "./editor.js";
 import { step } from "./step.js";
 import { parser } from "./parser.js";
 import { updateUI } from "./ui.js";
+import { create as createTape } from "./tape.js";
 // eventHandlers.js
 export function onReset() {
     machineState.currentHeadIndex = 0;
     machineState.currentState = undefined;
-    machineState.singleLineInputText = "";
+    machineState.singleLineInputText = createTape();
     machineState.singleLineOutputText = "";
     sections.dataSection = {};
 
@@ -54,13 +55,11 @@ export function onEdit() {
 }
 
 export function onStart() {
-    getSingleLineInput();
-
     document.getElementById("singleLineStep").style.display = "inline-block";
     document.getElementById("singleLineData").style.display = "";
     document.getElementById("singleLineStart").style.display = "none";
     document.getElementById("resetButton").style.display = "inline-block";
-    updateUI;
+    getSingleLineInput();
 }
 
 export function getTextFromEditor() {
@@ -113,7 +112,7 @@ export function singleLineStep() {
     console.groupEnd();
     updateUI();
 }
-export function getSingleLineInput() {
+function getSingleLineInput() {
     const inputElement = document.getElementById("singleLineInput");
     const singleLineDataDiv = document.getElementById("singleLineData");
 
@@ -123,7 +122,8 @@ export function getSingleLineInput() {
     }
 
     // @ts-ignore
-    machineState.singleLineInputText = `#${inputElement.value.trim()}#`;
+    // machineState.singleLineInputText = `#${inputElement.value.trim()}#`;
+    machineState.singleLineInputText.initializeTape(inputElement.value.trim())
 
     const inputID = "singleLineEntry"; // Unique ID for the element
     let singleLineCurrentState = document.getElementById(
@@ -153,7 +153,7 @@ export function getSingleLineInput() {
     }
 
     existingOutputElement.textContent = machineState.singleLineOutputText;
-    existingInputElement.textContent = machineState.singleLineInputText;
+    existingInputElement.textContent = machineState.singleLineInputText.getDataString();
 
     // Create sections for each key in sections.dataSection
     if (sections && sections.dataSection) {
@@ -181,7 +181,7 @@ export function getSingleLineInput() {
 function resetData() {
     machineState.currentHeadIndex = 0;
     machineState.currentState = undefined;
-    machineState.singleLineInputText = "";
+    machineState.singleLineInputText = createTape();
     machineState.singleLineOutputText = "";
     sections.dataSection = {};
 }

@@ -1,8 +1,10 @@
+import { create as createTape } from "./tape";
+
 /** @type {MachineState} */
 export const machineState = {
     currentState: undefined,
     currentHeadIndex: 0,
-    singleLineInputText: "",
+    singleLineInputText: createTape(),
     singleLineOutputText: "",
     isTape: false,
 };

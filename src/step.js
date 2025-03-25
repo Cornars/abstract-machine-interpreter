@@ -62,15 +62,13 @@ export function step(sections, machineState) {
  */
 function scan(sections, machineState) {
     console.group("Starting Scan (SCAN RIGHT)");
-    let scanRightValue =
-        machineState.singleLineInputText[machineState.currentHeadIndex + 1];
+    let scanRightValue = machineState.singleLineInputText.moveRight(false);
     console.log("Value Scanned on Right: ", scanRightValue);
     let nextStateName =
         machineState.currentState.transitions[scanRightValue].trim();
     let nextStateObject = sections.logicSection[nextStateName];
     machineState.currentState = nextStateObject;
     console.log("TRANSITION STATE: ", machineState.currentState);
-    machineState.currentHeadIndex++;
     console.groupEnd();
 }
 /**
