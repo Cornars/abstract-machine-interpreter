@@ -93,3 +93,4 @@ export function initializeParser() {
     };
     return publicAPI;
 }
+export const parser = initializeParser();
