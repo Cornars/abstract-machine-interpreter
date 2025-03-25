@@ -10,6 +10,7 @@ import { create as createTape } from "./tape.js";
 export function onReset() {
     machineState.currentHeadIndex = 0;
     machineState.currentState = undefined;
+    // TODO: create a reset tape option here. 
     machineState.singleLineInputText = createTape();
     machineState.singleLineOutputText = "";
     sections.dataSection = {};
@@ -33,6 +34,7 @@ export function onReset() {
     document.getElementById("singleLineStep").disabled = false;
     document.getElementById("singleLineStart").style.display = "inline-block";
     updateUI();
+    document.getElementById("singleLineData").innerHTML = '';
 }
 
 export function onEdit() {
@@ -51,7 +53,6 @@ export function onEdit() {
     document.getElementById("singleLineStep").style.display = "none";
     document.getElementById("singleLineData").style.display = "none";
     document.getElementById("resetButton").style.display = "none";
-    updateUI()
 }
 
 export function onStart() {

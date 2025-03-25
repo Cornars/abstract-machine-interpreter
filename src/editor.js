@@ -19,4 +19,11 @@ D] READ(S1) (#,E)
 E] SCAN (1,D), (#,F)
 F] READ(S1) (#,accept)
                 `;
-export const editor = createEditor(initialText)
+const initialInfinite =
+`
+.LOGIC
+A] SCAN LEFT (#, B)
+B] SCAN LEFT (#, C)
+C] SCAN RIGHT (#, A)
+`
+export const editor = createEditor(initialInfinite)

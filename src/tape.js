@@ -30,14 +30,15 @@ export function create() {
         return readInput
     }
 
-    function moveLeft(rewriteValue) {
+    function moveLeft(isRewrite, rewriteValue = "#") {
         pointerIndex--;
         if (pointerIndex < 0) {
             positiveArray.unshift("#");
-            pointerIndex = -1;
+            pointerIndex = 0;
         }
         let readInput = positiveArray[pointerIndex]
-        positiveArray[pointerIndex] = rewriteValue;
+        console.log("readInput: ", readInput)
+        if (isRewrite) positiveArray[pointerIndex] = rewriteValue;
         return readInput
     }
 

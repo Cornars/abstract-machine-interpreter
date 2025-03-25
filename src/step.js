@@ -98,14 +98,13 @@ function print(sections, machineState) {
  */
 function scan_left(sections, machineState) {
     console.group("Starting SCAN LEFT");
-    let scanLeftValue =
-        machineState.singleLineInputText[machineState.currentHeadIndex - 1];
+    let scanLeftValue = machineState.singleLineInputText.moveLeft(false);
     console.log("Value Scanned on Left: ", scanLeftValue);
-    let nextStateName = machineState.currentState.transitions[scanLeftValue];
+    let nextStateName = machineState.currentState.transitions[scanLeftValue].trim();
+    console.log("NEXT STATE:", nextStateName)
     let nextStateObject = sections.logicSection[nextStateName];
     machineState.currentState = nextStateObject;
     console.log("TRANSITION STATE: ", machineState.currentState);
-    machineState.currentHeadIndex--;
     console.groupEnd();
 }
 
