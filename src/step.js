@@ -73,7 +73,8 @@ function scan(sections, machineState) {
     let scanRightValue = machineState.singleLineInputText.moveRight(false);
     console.log("Value Scanned on Right: ", scanRightValue);
     let nextStateName =
-        machineState.currentState.transitions[scanRightValue].trim();
+        machineState.currentState.transitions[scanRightValue];
+    if(nextStateName != undefined) nextStateName = nextStateName.trim()
     let nextStateObject = sections.logicSection[nextStateName];
     machineState.currentState = nextStateObject;
     console.log("TRANSITION STATE: ", machineState.currentState);
