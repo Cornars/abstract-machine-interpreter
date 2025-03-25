@@ -8,13 +8,7 @@ import { updateUI } from "./ui.js";
 import { create as createTape } from "./tape.js";
 // eventHandlers.js
 export function onReset() {
-    machineState.currentHeadIndex = 0;
-    machineState.currentState = undefined;
-    // TODO: create a reset tape option here. 
-    machineState.singleLineInputText = createTape();
-    machineState.singleLineOutputText = "";
-    sections.dataSection = {};
-
+    resetData();
     // removes all the section-ids
     document
         .querySelectorAll("[id^='section-']")
@@ -88,6 +82,7 @@ export function getTextFromEditor() {
     } catch (error) {
         errorHandlingArea.textContent = `Compile error: ${error.message}`;
         errorHandlingArea.style.color = "red";
+        console.log(error)
     }
     console.groupEnd();
 }
@@ -154,7 +149,7 @@ function getSingleLineInput() {
     }
 
     existingOutputElement.textContent = machineState.singleLineOutputText;
-    existingInputElement.textContent = machineState.singleLineInputText.getDataString();
+    existingInputElement.textContent = machineState.singleLineInputText.getData();
 
     // Create sections for each key in sections.dataSection
     if (sections && sections.dataSection) {
@@ -182,7 +177,8 @@ function getSingleLineInput() {
 function resetData() {
     machineState.currentHeadIndex = 0;
     machineState.currentState = undefined;
-    machineState.singleLineInputText = createTape();
+    machineState.isTape = false;
+    machineState.singleLineInputText.resetTape();
     machineState.singleLineOutputText = "";
     sections.dataSection = {};
 }

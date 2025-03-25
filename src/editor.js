@@ -26,4 +26,14 @@ A] SCAN LEFT (#, B)
 B] SCAN LEFT (#, C)
 C] SCAN RIGHT (#, A)
 `
-export const editor = createEditor(initialInfinite)
+const tapeCreated = 
+`
+.DATA
+TAPE T1
+TAPE T2
+.LOGIC
+A] SCAN LEFT (#, B)
+B] SCAN LEFT (#, C)
+C] SCAN RIGHT (#, A) 
+`
+export const editor = createEditor(tapeCreated)

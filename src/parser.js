@@ -38,7 +38,7 @@ const compileString = function (editorArray, sections, machineState) {
                     /** @type {Tape} */
                     sections.dataSection[name] = createTape();
                     if (!machineState.isTape) {
-                        machineState.tape = sections.dataSection[name];
+                        machineState.singleLineInputText = sections.dataSection[name];
                         machineState.isTape = true;
                         console.log(
                             "DATA IN TAPE:",

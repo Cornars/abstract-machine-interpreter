@@ -50,7 +50,8 @@ interface Tape{
     moveLeft: (isRead: boolean, rewriteValue?: string, ) => string;
     moveRight: (isRead: boolean, rewriteValue?: string, ) => string;
     printData(): void;
-    getDataString(): string;
+    getData(): string;
     getPointerIndex(): number;
+    resetTape(): void;
 }
 

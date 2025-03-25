@@ -56,11 +56,19 @@ export function create() {
         printData() {
             console.log(getTapeArray().join(""));
         },
-        getDataString() {
+        getData() {
             return positiveArray.join("");
         },
         getPointerIndex() {
             return pointerIndex;
+        },
+        resetTape(){
+            pointerIndex = 0;
+            // resets the tape values
+            positiveArray.length = 0
+            positiveArray.push("#")
+
         }
+
     };
 }

@@ -21,7 +21,7 @@ function updateHeadHighlight() {
     //     machineState.currentHeadIndex =
     //         machineState.singleLineInputText.length - 1;
 
-    const highlightedText = machineState.singleLineInputText.getDataString()
+    const highlightedText = machineState.singleLineInputText.getData()
         .split("")
         .map((char, index) =>
             index === machineState.singleLineInputText.getPointerIndex()
