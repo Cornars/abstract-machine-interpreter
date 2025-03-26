@@ -1,8 +1,15 @@
+declare module "global-utils" {
+    export function create(): Queue;
+    export function create(): Tape;
+}
+
 interface MachineState {
     currentState: State;
     currentHeadIndex: number;
-    singleLineInputText: string;
+    singleLineInputText: Tape;
     singleLineOutputText: string;
+    tape?: Tape;
+    isTape: boolean;
 }
 
 interface Sections {
@@ -26,3 +33,26 @@ interface State {
     command: string;
     transitions: Object<string, string>;
 }
+
+interface Queue {
+    enqueue(value: string): void;
+    dequeue(): string;
+    getFirstElement(): string;
+}
+interface Stack {
+    enqueue(value: string): void;
+    dequeue(): string;
+    getFirstElement(): string;
+}
+
+interface Tape{
+    initializeTape:(inputString: string) => void;
+    moveLeft: (isRead: boolean, rewriteValue?: string, ) => string;
+    moveRight: (isRead: boolean, rewriteValue?: string, ) => string;
+    printData(): void;
+    getData(): string;
+    getPointerIndex(): number;
+    resetTape(): void;
+    rewritePointer(rewriteValue: string): void;
+}
+

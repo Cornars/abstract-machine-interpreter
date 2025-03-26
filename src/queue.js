@@ -13,6 +13,12 @@ export function create() {
         getFirstElement() {
             return queue[0];
         },
+        printData() {
+            console.log(queue);
+        },
+        getData() {
+            return queue;
+        },
     };
     return publicAPI;
 }

@@ -13,6 +13,12 @@ export function create() {
         getFirstElement() {
             return stack[0];
         },
+        printData() {
+            console.log(stack);
+        },
+        getData() {
+            return stack;
+        },
     };
     return publicAPI;
 }
