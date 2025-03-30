@@ -1,17 +1,16 @@
 import {
     onReset,
     onEdit,
-    onStart,
-    singleLineStep,
     getTextFromEditor,
-    instantEnd,
 } from "./eventHandlers.js";
+import { singleLineStep, instantEnd } from "./singleline.js";
+import { onSingleLineStart } from "./singleline.js";
 
 async function main() {
     document.getElementById("resetButton").addEventListener("click", onReset);
     document
         .getElementById("singleLineStart")
-        .addEventListener("click", onStart);
+        .addEventListener("click", onSingleLineStart);
 
     document.getElementById("editButton").addEventListener("click", onEdit);
     document
