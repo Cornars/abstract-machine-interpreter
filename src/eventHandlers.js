@@ -1,6 +1,6 @@
 import { EditorState, StateEffect } from "@codemirror/state";
 import { basicSetup } from "codemirror";
-import { machineState, sections } from "./state.js";
+import { machineState, sections, resetData } from "./state.js";
 import { editor as myView } from "./editor.js";
 import { step } from "./step.js";
 import { parser } from "./parser.js";
@@ -185,13 +185,4 @@ export function instantEnd() {
     while(!(machineState.currentState.stateName == "reject" || machineState.currentState.stateName == "accept")){
         singleLineStep();
     }
-}
-
-function resetData() {
-    machineState.currentHeadIndex = 0;
-    machineState.currentState = undefined;
-    machineState.isTape = false;
-    machineState.singleLineInputText.resetTape();
-    machineState.singleLineOutputText = "";
-    sections.dataSection = {};
 }
