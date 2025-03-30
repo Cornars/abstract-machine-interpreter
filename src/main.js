@@ -4,6 +4,7 @@ import {
     onStart,
     singleLineStep,
     getTextFromEditor,
+    instantEnd,
 } from "./eventHandlers.js";
 
 async function main() {
@@ -17,6 +18,9 @@ async function main() {
         .getElementById("singleLineStep")
         .addEventListener("click", singleLineStep);
 
+    document
+        .getElementById("singleLineEnd")
+        .addEventListener("click", instantEnd);
     // Attach event listener to the compile button
     document
         .getElementById("compileButton")

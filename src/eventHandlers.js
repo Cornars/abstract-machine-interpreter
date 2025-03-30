@@ -23,9 +23,12 @@ export function onReset() {
     document.getElementById("singleLineCurrentState").textContent = "";
     document.getElementById("singleLineEntry").style.color = "black";
     document.getElementById("singleLineStep").style.display = "none";
+    document.getElementById("singleLineEnd").style.display = "none";
     document.getElementById("resetButton").style.display = "none";
     // @ts-ignore
     document.getElementById("singleLineStep").disabled = false;
+    // @ts-ignore
+    document.getElementById("singleLineEnd").disabled = false;
     document.getElementById("singleLineStart").style.display = "inline-block";
     updateUI();
     document.getElementById("singleLineData").innerHTML = '';
@@ -45,12 +48,14 @@ export function onEdit() {
     document.getElementById("compileButton").style.display = "inline-block";
     document.getElementById("singleLineStart").style.display = "none";
     document.getElementById("singleLineStep").style.display = "none";
+    document.getElementById("singleLineEnd").style.display = "none";
     document.getElementById("singleLineData").style.display = "none";
     document.getElementById("resetButton").style.display = "none";
 }
 
 export function onStart() {
     document.getElementById("singleLineStep").style.display = "inline-block";
+    document.getElementById("singleLineEnd").style.display = "inline-block";
     document.getElementById("singleLineData").style.display = "";
     document.getElementById("singleLineStart").style.display = "none";
     document.getElementById("resetButton").style.display = "inline-block";
@@ -102,6 +107,7 @@ export function singleLineStep() {
                 ? "green"
                 : "red";
         document.getElementById("singleLineStep").style.display = "none";
+        document.getElementById("singleLineEnd").style.display = "none";
     }
     document.getElementById(
         "singleLineCurrentState"
@@ -173,6 +179,12 @@ function getSingleLineInput() {
         });
     }
     updateUI();
+}
+
+export function instantEnd() {
+    while(!(machineState.currentState.stateName == "reject" || machineState.currentState.stateName == "accept")){
+        singleLineStep();
+    }
 }
 
 function resetData() {
