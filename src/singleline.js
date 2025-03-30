@@ -1,6 +1,8 @@
 
 /// <reference path="../types/globals.d.ts" />
-import { sections, machineState } from "./state";
+import { editor as myView } from "./editor";
+import { parser } from "./parser";
+import { sections, machineState, resetData } from "./state";
 import { step } from "./step";
 import { updateUI } from "./ui";
 
@@ -12,6 +14,9 @@ export function onSingleLineStart() {
     document.getElementById("singleLineData").style.display = "";
     document.getElementById("singleLineStart").style.display = "none";
     document.getElementById("resetButton").style.display = "inline-block";
+    
+    // THIS HIDES THE MULTILINE START.
+    document.getElementById("multiLineStart").style.display = "none";
     getSingleLineInput();
 
 }export function singleLineStep() {
@@ -104,4 +109,33 @@ export function instantEnd() {
         singleLineStep();
     }
 }
+// eventHandlers.js
+export function onSingleLineReset() {
+    resetData();
+    // removes all the section-ids
+    document
+        .querySelectorAll("[id^='section-']")
+        .forEach((element) => element.remove());
 
+    // Recompile
+    // @ts-ignore
+    parser.compileString(myView.state.doc.text, sections, machineState);
+
+    document.getElementById("singleLineEntry").textContent = "";
+    document.getElementById("singleLineOutput").textContent = "";
+    document.getElementById("singleLineCurrentState").textContent = "";
+    document.getElementById("singleLineEntry").style.color = "black";
+    document.getElementById("singleLineStep").style.display = "none";
+    document.getElementById("singleLineEnd").style.display = "none";
+    document.getElementById("resetButton").style.display = "none";
+    // @ts-ignore
+    document.getElementById("singleLineStep").disabled = false;
+    // @ts-ignore
+    document.getElementById("singleLineEnd").disabled = false;
+    document.getElementById("singleLineStart").style.display = "inline-block";
+    updateUI();
+    document.getElementById("singleLineData").innerHTML = '';
+
+    document.getElementById("multiLineStart").style.display = "inline-block";
+    
+}

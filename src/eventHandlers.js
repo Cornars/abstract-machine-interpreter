@@ -3,37 +3,9 @@ import { basicSetup } from "codemirror";
 import { machineState, sections, resetData } from "./state.js";
 import { editor as myView } from "./editor.js";
 import { parser } from "./parser.js";
-import { updateUI } from "./ui.js";
 import { create as createTape } from "./tape.js";
-// eventHandlers.js
-export function onReset() {
-    resetData();
-    // removes all the section-ids
-    document
-        .querySelectorAll("[id^='section-']")
-        .forEach((element) => element.remove());
 
-    // Recompile
-    // @ts-ignore
-    parser.compileString(myView.state.doc.text, sections, machineState);
-
-    document.getElementById("singleLineEntry").textContent = "";
-    document.getElementById("singleLineOutput").textContent = "";
-    document.getElementById("singleLineCurrentState").textContent = "";
-    document.getElementById("singleLineEntry").style.color = "black";
-    document.getElementById("singleLineStep").style.display = "none";
-    document.getElementById("singleLineEnd").style.display = "none";
-    document.getElementById("resetButton").style.display = "none";
-    // @ts-ignore
-    document.getElementById("singleLineStep").disabled = false;
-    // @ts-ignore
-    document.getElementById("singleLineEnd").disabled = false;
-    document.getElementById("singleLineStart").style.display = "inline-block";
-    updateUI();
-    document.getElementById("singleLineData").innerHTML = '';
-}
-
-export function onEdit() {
+export function onEditorEdit() {
     myView.dispatch({
         effects: StateEffect.reconfigure.of([basicSetup]),
     });
@@ -50,9 +22,10 @@ export function onEdit() {
     document.getElementById("singleLineEnd").style.display = "none";
     document.getElementById("singleLineData").style.display = "none";
     document.getElementById("resetButton").style.display = "none";
+    document.getElementById("multiLineStart").style.display = "none"
 }
 
-export function getTextFromEditor() {
+export function compileEditor() {
     console.group("Starting Compilation...");
     const errorHandlingArea = document.getElementById("errorHandlingArea");
     try {
@@ -75,6 +48,7 @@ export function getTextFromEditor() {
             "inline-block";
         document.getElementById("singleLineStart").style.display =
             "inline-block";
+        document.getElementById("multiLineStart").style.display = "inline-block"
     } catch (error) {
         errorHandlingArea.textContent = `Compile error: ${error.message}`;
         errorHandlingArea.style.color = "red";

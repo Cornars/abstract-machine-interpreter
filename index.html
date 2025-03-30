@@ -76,11 +76,29 @@
             </div>
             <div name="multiline" class="flex-1">
                 <textarea
-                    id="chat"
+                    id="multilineInput"
                     rows="6"
                     class="resize-none block p-2.5 w-full text-sm text-gray-900 bg-white rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 mb-5"
                     placeholder="Multiple Line Input..."
-                ></textarea>
+                >
+00001111
+00111
+0000111
+00011
+</textarea
+                >
+                <button
+                    type="button"
+                    class="hidden text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm px-4 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700"
+                    id="multiLineStart"
+                >
+                    Start
+                </button>
+                <div class="flex" id="iteratedData">
+                    <!-- 
+                    TODO: create a new div for each input in the multiline 
+                    for example: first line is multiline-1
+                --></div>
             </div>
         </div>
         <div class="flex-1/4"></div>
