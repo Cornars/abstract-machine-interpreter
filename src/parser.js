@@ -50,7 +50,7 @@ const compileString = function (editorArray, sections, machineState) {
                 case "2D_TAPE":
                     console.log("2D tape created named: ", name);
                     sections.dataSection[name] = create2DTape();
-                    if (!machineState.is2DTape) {
+                    if (!machineState.is2DTape && !machineState.isTape) {
                         machineState.singleLineInputText = sections.dataSection[name];
                         machineState.is2DTape = true;
                         machineState.isTape = true; // Mark as tape as well for compatibility
