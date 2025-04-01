@@ -179,6 +179,7 @@ function resetData() {
     machineState.currentHeadIndex = 0;
     machineState.currentState = undefined;
     machineState.isTape = false;
+    machineState.is2DTape = false;
     machineState.singleLineInputText.resetTape();
     machineState.singleLineOutputText = "";
     sections.dataSection = {};

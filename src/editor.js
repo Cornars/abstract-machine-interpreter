@@ -47,4 +47,16 @@ C] LEFT(T1) (0/0,C), (Y/Y,C), (X/X,A)
 D] RIGHT(T1) (Y/Y,D), (#/#,accept), (1/1,reject)
 `
 
-export const editor = createEditor(movingTapes)
+const two_dtapes =
+`
+.DATA
+2D_TAPE T1
+.LOGIC
+A] RIGHT(T1) (0/X,B), (Y/Y,D), (1/1,reject)
+B] RIGHT(T1) (0/0,B), (Y/Y,B), (1/Y,C)
+C] LEFT(T1) (0/0,C), (Y/Y,C), (X/X,A)
+D] RIGHT(T1) (Y/Y,D), (#/#,E), (1/1,reject)
+E] DOWN(T1) (#/1, E)
+`
+
+export const editor = createEditor(two_dtapes)

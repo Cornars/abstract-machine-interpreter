@@ -74,8 +74,8 @@ const compileString = function (editorArray, sections, machineState) {
     logicSectionText.forEach((state, index) => {
         // skip no line states
         if (!state) return;
-        const stateSplit = state.split(" ");
-        const stateName = stateSplit[0].replace("]", "");
+        const stateSplit = state.split(/\s+/).map(s => s.trim());
+        const stateName = stateSplit[0].replace("]", "").trim();
         // Detect two-word commands
         let command = stateSplit[1];
         if (stateSplit.length > 2 && /^[A-Z]+$/.test(stateSplit[2])) {

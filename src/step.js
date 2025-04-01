@@ -188,7 +188,7 @@ function right(sections, machineState, dataVariableName) {
             console.log("HIT!")
             machineState.singleLineInputText.rewritePointer(rewriteValue.trim());
             console.log(machineState.currentState)
-            let nextState = machineState.currentState.transitions[key]
+            let nextState = machineState.currentState.transitions[key.trim()]
             machineState.currentState = sections.logicSection[nextState]
             isRewritten = true
             break;
@@ -219,7 +219,7 @@ function left(sections, machineState, dataVariableName) {
         if (leftReadValue === expectedHead.trim()){
             console.log("HIT!")
             machineState.singleLineInputText.rewritePointer(rewriteValue.trim());
-            let nextState = machineState.currentState.transitions[key]
+            let nextState = machineState.currentState.transitions[key.trim()]
             machineState.currentState = sections.logicSection[nextState]
             isRewritten = true
             break;
@@ -250,7 +250,7 @@ function up(sections, machineState, dataVariableName) {
         if (upReadValue === expectedHead.trim()){
             console.log("HIT!")
             machineState.singleLineInputText.rewritePointer(rewriteValue.trim());
-            let nextState = machineState.currentState.transitions[key]
+            let nextState = machineState.currentState.transitions[key.trim()]
             machineState.currentState = sections.logicSection[nextState]
             isRewritten = true
             break;
@@ -275,8 +275,9 @@ function down(sections, machineState, dataVariableName) {
         if (downReadValue === expectedHead.trim()){
             console.log("HIT!")
             machineState.singleLineInputText.rewritePointer(rewriteValue.trim());
-            let nextState = machineState.currentState.transitions[key]
-            machineState.currentState = sections.logicSection[nextState]
+            let nextState = machineState.currentState.transitions[key.trim()]
+            console.log("Next State: ", nextState)
+            machineState.currentState = sections.logicSection[nextState.trim()]
             isRewritten = true
             break;
         }
