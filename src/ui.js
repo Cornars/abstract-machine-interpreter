@@ -14,23 +14,42 @@ function updateOutputString() {
 }
 
 function updateHeadHighlight() {
-    // if (machineState.currentHeadIndex < 0) machineState.currentHeadIndex = 0;
-    // if (
-    //     machineState.currentHeadIndex >= machineState.singleLineInputText.length
-    // )
-    //     machineState.currentHeadIndex =
-    //         machineState.singleLineInputText.length - 1;
-
-    const highlightedText = machineState.singleLineInputText.getData()
-        .split("")
-        .map((char, index) =>
-            index === machineState.singleLineInputText.getPointerIndex()
-                ? `<span style="color: red;">${char}</span>`
-                : char
-        )
-        .join("");
-
-    document.getElementById("singleLineEntry").innerHTML = highlightedText;
+    const inputText = machineState.singleLineInputText;
+    
+    // Handle 2D tape
+    if (machineState.is2DTape) {
+        const tapeData = inputText.getData(); // This returns a 2D array
+        const pointerPos = inputText.getPointerPosition();
+        
+        // Convert 2D array to string representation with pointer highlight
+        let highlightedText = '';
+        for (let y = 0; y < tapeData.length; y++) {
+            const row = tapeData[y];
+            for (let x = 0; x < row.length; x++) {
+                const char = row[x];
+                if (x === pointerPos.x && y === pointerPos.y) {
+                    highlightedText += `<span style="color: red;">${char}</span>`;
+                } else {
+                    highlightedText += char;
+                }
+            }
+            highlightedText += '<br>'; // Add line break between rows
+        }
+        document.getElementById("singleLineEntry").innerHTML = highlightedText;
+    } 
+    // Handle regular tape
+    else {
+        const tapeString = inputText.getData(); // This returns a string
+        const highlightedText = tapeString
+            .split("")
+            .map((char, index) =>
+                index === inputText.getPointerIndex()
+                    ? `<span style="color: red;">${char}</span>`
+                    : char
+            )
+            .join("");
+        document.getElementById("singleLineEntry").innerHTML = highlightedText;
+    }
 }
 
 function updateDataTypes() {

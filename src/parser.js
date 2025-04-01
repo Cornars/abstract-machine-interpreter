@@ -1,6 +1,7 @@
 import { create as createStack } from "./stack";
 import { create as createQueue } from "./queue";
 import { create as createTape } from "./tape";
+import { create as create2DTape } from "./2dtape"
 
 /// <reference path="../types/globals.d.ts" />
 
@@ -42,6 +43,19 @@ const compileString = function (editorArray, sections, machineState) {
                         machineState.isTape = true;
                         console.log(
                             "DATA IN TAPE:",
+                            sections.dataSection[name].getData()
+                        );
+                    }
+                    break;
+                case "2D_TAPE":
+                    console.log("2D tape created named: ", name);
+                    sections.dataSection[name] = create2DTape();
+                    if (!machineState.is2DTape) {
+                        machineState.singleLineInputText = sections.dataSection[name];
+                        machineState.is2DTape = true;
+                        machineState.isTape = true; // Mark as tape as well for compatibility
+                        console.log(
+                            "DATA IN 2D TAPE:",
                             sections.dataSection[name].getData()
                         );
                     }
