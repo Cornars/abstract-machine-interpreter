@@ -186,7 +186,8 @@ function right(sections, machineState, dataVariableName) {
         console.log(rightReadValue, expectedHead)
         if (rightReadValue === expectedHead.trim()){
             console.log("HIT!")
-            machineState.singleLineInputText.rewritePointer(rewriteValue.trim());
+            sections.dataSection[dataVariableName].rewritePointer(rewriteValue.trim());
+            // machineState.singleLineInputText.rewritePointer(rewriteValue.trim());
             console.log(machineState.currentState)
             let nextState = machineState.currentState.transitions[key.trim()]
             machineState.currentState = sections.logicSection[nextState]
@@ -218,7 +219,7 @@ function left(sections, machineState, dataVariableName) {
         console.log(leftReadValue, expectedHead)
         if (leftReadValue === expectedHead.trim()){
             console.log("HIT!")
-            machineState.singleLineInputText.rewritePointer(rewriteValue.trim());
+            sections.dataSection[dataVariableName].rewritePointer(rewriteValue.trim());
             let nextState = machineState.currentState.transitions[key.trim()]
             machineState.currentState = sections.logicSection[nextState]
             isRewritten = true
@@ -249,7 +250,7 @@ function up(sections, machineState, dataVariableName) {
         console.log(upReadValue, expectedHead)
         if (upReadValue === expectedHead.trim()){
             console.log("HIT!")
-            machineState.singleLineInputText.rewritePointer(rewriteValue.trim());
+            sections.dataSection[dataVariableName].rewritePointer(rewriteValue.trim());
             let nextState = machineState.currentState.transitions[key.trim()]
             machineState.currentState = sections.logicSection[nextState]
             isRewritten = true
@@ -274,7 +275,7 @@ function down(sections, machineState, dataVariableName) {
         console.log(downReadValue, expectedHead)
         if (downReadValue === expectedHead.trim()){
             console.log("HIT!")
-            machineState.singleLineInputText.rewritePointer(rewriteValue.trim());
+            sections.dataSection[dataVariableName].rewritePointer(rewriteValue.trim());
             let nextState = machineState.currentState.transitions[key.trim()]
             console.log("Next State: ", nextState)
             machineState.currentState = sections.logicSection[nextState.trim()]
