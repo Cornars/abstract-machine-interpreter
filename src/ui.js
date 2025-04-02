@@ -18,7 +18,7 @@ function updateHeadHighlight() {
     
     // Handle 2D tape
     if (machineState.is2DTape) {
-        const tapeData = inputText.getData(); // This returns a 2D array
+        const tapeData = inputText.get2DArray(); // This returns a 2D array
         const pointerPos = inputText.getPointerPosition();
         
         // Convert 2D array to string representation with pointer highlight
@@ -58,15 +58,14 @@ function updateDataTypes() {
         Object.keys(sections.dataSection).forEach((key) => {
             const sectionID = `section-${key}`;
             let sectionElement = document.getElementById(sectionID);
-            const newData = `${key}: ${sections.dataSection[key].getData()}`;
-
+            const newData = `${key}:<br>${sections.dataSection[key].getData()}`;
             if (!sectionElement) {
-                sectionElement = document.createElement("div");
+                sectionElement = document.createElement("h1");
                 sectionElement.id = sectionID;
-                sectionElement.textContent = newData;
+                sectionElement.innerHTML = newData;
                 singleLineDataDiv.appendChild(sectionElement);
             } else if (sectionElement.textContent !== newData) {
-                sectionElement.textContent = newData;
+                sectionElement.innerHTML = newData;
             }
         });
     }

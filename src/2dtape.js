@@ -172,8 +172,17 @@ export function create() {
          * Gets the current tape data as a 2D array
          * @returns {Array<Array<String>>}
          */
-        getData() {
+        get2DArray() {
             return tapeRows.map((row) => [...row]);
+        },
+        getData() {
+            let tapeRowString = "";
+            tapeRows.map((row) => {
+                tapeRowString = tapeRowString.concat(row.join("") + "<br>")
+            });
+            console.log(tapeRowString)
+            return tapeRowString
+
         },
 
         /**
