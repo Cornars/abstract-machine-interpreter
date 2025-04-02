@@ -60,7 +60,7 @@ function updateDataTypes() {
             let sectionElement = document.getElementById(sectionID);
             const newData = `${key}:<br>${sections.dataSection[key].getData()}`;
             if (!sectionElement) {
-                sectionElement = document.createElement("h1");
+                sectionElement = document.createElement("div");
                 sectionElement.id = sectionID;
                 sectionElement.innerHTML = newData;
                 singleLineDataDiv.appendChild(sectionElement);
