@@ -1,6 +1,7 @@
 import { create as createStack } from "./stack";
 import { create as createQueue } from "./queue";
 import { create as createTape } from "./tape";
+import { create as create2DTape } from "./2dtape"
 
 /// <reference path="../types/globals.d.ts" />
 
@@ -46,6 +47,19 @@ const compileString = function (editorArray, sections, machineState) {
                         );
                     }
                     break;
+                case "2D_TAPE":
+                    console.log("2D tape created named: ", name);
+                    sections.dataSection[name] = create2DTape();
+                    if (!machineState.is2DTape && !machineState.isTape) {
+                        machineState.singleLineInputText = sections.dataSection[name];
+                        machineState.is2DTape = true;
+                        machineState.isTape = true; // Mark as tape as well for compatibility
+                        console.log(
+                            "DATA IN 2D TAPE:",
+                            sections.dataSection[name].getData()
+                        );
+                    }
+                    break;
                 default:
                     sections.dataSection[name] = varType;
                     console.log("DEFAULT, NO ASSIGNMENT");
@@ -60,8 +74,8 @@ const compileString = function (editorArray, sections, machineState) {
     logicSectionText.forEach((state, index) => {
         // skip no line states
         if (!state) return;
-        const stateSplit = state.split(" ");
-        const stateName = stateSplit[0].replace("]", "");
+        const stateSplit = state.split(/\s+/).map(s => s.trim());
+        const stateName = stateSplit[0].replace("]", "").trim();
         // Detect two-word commands
         let command = stateSplit[1];
         if (stateSplit.length > 2 && /^[A-Z]+$/.test(stateSplit[2])) {
