@@ -5,8 +5,10 @@ export const machineState = {
     currentState: undefined,
     currentHeadIndex: 0,
     singleLineInputText: createTape(),
+    firstTapeName: "",
     singleLineOutputText: "",
     isTape: false,
+    is2DTape: false,
 };
 
 /** @type {Sections} */

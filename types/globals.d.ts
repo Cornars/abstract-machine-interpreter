@@ -8,7 +8,7 @@ interface MachineState {
     currentHeadIndex: number;
     singleLineInputText: Tape;
     singleLineOutputText: string;
-    tape: Tape;
+    firstTapeName: string;
     isTape: boolean;
     is2DTape: boolean;
 }

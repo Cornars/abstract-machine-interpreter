@@ -1,7 +1,7 @@
 /// <reference path="../types/globals.d.ts" />
 
 /**
- * 
+ *
  * @returns {Tape}
  */
 export function create() {
@@ -13,9 +13,9 @@ export function create() {
     }
 
     /**
-     * 
-     * @param {String} rewriteValue 
-     * @param {boolean} isRewrite = false 
+     *
+     * @param {String} rewriteValue
+     * @param {boolean} isRewrite = false
      * @returns {String}
      */
     function moveRight(isRewrite, rewriteValue = "#") {
@@ -23,11 +23,11 @@ export function create() {
         if (pointerIndex >= positiveArray.length) {
             positiveArray.push("#");
         }
-        let readInput = positiveArray[pointerIndex]
-        if (isRewrite){
+        let readInput = positiveArray[pointerIndex];
+        if (isRewrite) {
             positiveArray[pointerIndex] = rewriteValue;
         }
-        return readInput
+        return readInput;
     }
 
     function moveLeft(isRewrite, rewriteValue = "#") {
@@ -36,18 +36,18 @@ export function create() {
             positiveArray.unshift("#");
             pointerIndex = 0;
         }
-        let readInput = positiveArray[pointerIndex]
-        console.log("readInput: ", readInput)
+        let readInput = positiveArray[pointerIndex];
+        console.log("readInput: ", readInput);
         if (isRewrite) positiveArray[pointerIndex] = rewriteValue;
-        return readInput
+        return readInput;
     }
-    function rewritePointer(rewriteValue){
-        positiveArray[pointerIndex] = rewriteValue
+    function rewritePointer(rewriteValue) {
+        positiveArray[pointerIndex] = rewriteValue;
     }
 
     return {
         initializeTape(inputString) {
-            console.log("INPUT:", inputString)
+            console.log("INPUT:", inputString);
             positiveArray.push(...inputString.split(""));
             if (positiveArray.length === 0) {
                 positiveArray.push("#");
@@ -59,18 +59,27 @@ export function create() {
         printData() {
             console.log(getTapeArray().join(""));
         },
+        getFormattedData() {
+            return positiveArray
+                .map((cell, index) => {
+                    // Highlight current pointer position in red
+                    return index === pointerIndex
+                        ? `<span style="color: red;">${cell}</span>`
+                        : cell;
+                })
+                .join("");
+        },
         getData() {
             return positiveArray.join("");
         },
         getPointerIndex() {
             return pointerIndex;
         },
-        resetTape(){
+        resetTape() {
             pointerIndex = 0;
             // resets the tape values
-            positiveArray.length = 0
-            positiveArray.push("#")
-
+            positiveArray.length = 0;
+            positiveArray.push("#");
         },
         rewritePointer,
     };

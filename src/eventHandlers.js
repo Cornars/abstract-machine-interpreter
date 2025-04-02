@@ -121,6 +121,10 @@ function getSingleLineInput() {
     // @ts-ignore
     // machineState.singleLineInputText = `#${inputElement.value.trim()}#`;
     machineState.singleLineInputText.initializeTape(inputElement.value.trim())
+    if(machineState.isTape){
+        // @ts-ignore
+        sections.dataSection[machineState.firstTapeName].initializeTape(inputElement.value.trim())
+    }
 
     const inputID = "singleLineEntry"; // Unique ID for the element
     let singleLineCurrentState = document.getElementById(
@@ -150,7 +154,7 @@ function getSingleLineInput() {
     }
 
     existingOutputElement.textContent = machineState.singleLineOutputText;
-    existingInputElement.textContent = machineState.singleLineInputText.getData();
+    existingInputElement.innerHTML = machineState.singleLineInputText.getData();
 
     // Create sections for each key in sections.dataSection
     if (sections && sections.dataSection) {

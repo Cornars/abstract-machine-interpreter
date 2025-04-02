@@ -136,8 +136,8 @@ export function create() {
             // Reset tape
             pointerX = 0;
             pointerY = 0;
-            tapeRows.length = 1
-            tapeRows = [["#"]]
+            tapeRows.length = 1;
+            tapeRows = [["#"]];
             // Clean input and ensure it starts with #
             const cleanInput = inputString.trim();
             tapeRows = [["#"].concat(cleanInput.split(""))];
@@ -174,6 +174,24 @@ export function create() {
          */
         get2DArray() {
             return tapeRows.map((row) => [...row]);
+        },
+        getFormattedData() {
+            let tapeRowString = "";
+            tapeRows.forEach((row, rowIndex) => {
+                // Process each cell in the row
+                const formattedRow = row
+                    .map((cell, colIndex) => {
+                        // Check if this is the current pointer position
+                        if (rowIndex === pointerY && colIndex === pointerX) {
+                            return `<span style="color: red;">${cell}</span>`;
+                        }
+                        return cell;
+                    })
+                    .join("");
+
+                tapeRowString += formattedRow + "<br>";
+            });
+            return tapeRowString;
         },
         getData() {
             let tapeRowString = "";

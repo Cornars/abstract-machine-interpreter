@@ -39,7 +39,7 @@ const compileString = function (editorArray, sections, machineState) {
                     /** @type {Tape} */
                     sections.dataSection[name] = createTape();
                     if (!machineState.isTape) {
-                        machineState.singleLineInputText = sections.dataSection[name];
+                        machineState.firstTapeName = name
                         machineState.isTape = true;
                         console.log(
                             "DATA IN TAPE:",
@@ -51,7 +51,7 @@ const compileString = function (editorArray, sections, machineState) {
                     console.log("2D tape created named: ", name);
                     sections.dataSection[name] = create2DTape();
                     if (!machineState.is2DTape && !machineState.isTape) {
-                        machineState.singleLineInputText = sections.dataSection[name];
+                        machineState.firstTapeName = name
                         machineState.is2DTape = true;
                         machineState.isTape = true; // Mark as tape as well for compatibility
                         console.log(
