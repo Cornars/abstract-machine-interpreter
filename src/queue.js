@@ -19,6 +19,9 @@ export function create() {
         getData() {
             return queue;
         },
+        getFormattedData(){
+            return `[${queue.join("")}]`
+        }
     };
     return publicAPI;
 }

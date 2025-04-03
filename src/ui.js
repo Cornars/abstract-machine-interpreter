@@ -15,7 +15,7 @@ function updateOutputString() {
 
 function updateHeadHighlight() {
     const inputText = machineState.singleLineInputText;
-    const tapeString = inputText.getFormattedData(); // This returns a string
+    const tapeString = (machineState.is2DTape) ? inputText.getFormattedData() : inputText.getData();
     const highlightedText = tapeString
         .split("")
         .map((char, index) =>

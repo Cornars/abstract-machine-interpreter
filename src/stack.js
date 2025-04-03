@@ -19,6 +19,9 @@ export function create() {
         getData() {
             return stack;
         },
+        getFormattedData() {
+            return `[${stack.join("")}]`;
+        },
     };
     return publicAPI;
 }
