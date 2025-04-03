@@ -7,6 +7,7 @@ export const machineState = {
     singleLineInputText: createTape(),
     singleLineOutputText: "",
     isTape: false,
+    is2DTape: false,
 };
 
 /** @type {Sections} */

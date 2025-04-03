@@ -28,7 +28,9 @@ export function singleLineStep() {
     ) {
         const singleLineEntry = document.getElementById("singleLineEntry");
         singleLineEntry.style.color =
-            machineState.currentState.stateName === "accept" ? "green" : "red";
+            machineState.currentState.stateName === "accept"
+                ? "green"
+                : "red";
         document.getElementById("singleLineStep").style.display = "none";
         document.getElementById("singleLineEnd").style.display = "none";
     }
@@ -49,7 +51,7 @@ export function getSingleLineInput() {
 
     // @ts-ignore
     // machineState.singleLineInputText = `#${inputElement.value.trim()}#`;
-    machineState.singleLineInputText.initializeTape(inputElement.value.trim());
+    machineState.singleLineInputText.initializeTape(inputElement.value.trim())
 
     const inputID = "singleLineEntry"; // Unique ID for the element
     let singleLineCurrentState = document.getElementById(
@@ -79,8 +81,7 @@ export function getSingleLineInput() {
     }
 
     existingOutputElement.textContent = machineState.singleLineOutputText;
-    existingInputElement.textContent =
-        machineState.singleLineInputText.getData();
+    existingInputElement.textContent = machineState.singleLineInputText.getData();
 
     // Create sections for each key in sections.dataSection
     if (sections && sections.dataSection) {
@@ -96,7 +97,7 @@ export function getSingleLineInput() {
             }
 
             // Set text content in one line
-            console.log("sections datasecion:", sections.dataSection[key]);
+            console.log("sections datasecion:", sections.dataSection[key])
             sectionElement.textContent = `${key}: ${sections.dataSection[
                 key
             ].getData()}`;
