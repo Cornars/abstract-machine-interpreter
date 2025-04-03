@@ -1,4 +1,3 @@
-
 /// <reference path="../types/globals.d.ts" />
 import { editor as myView } from "./editor";
 import { parser } from "./parser";
@@ -6,31 +5,30 @@ import { sections, machineState, resetData } from "./state";
 import { step } from "./step";
 import { updateUI } from "./ui";
 
-
-
 export function onSingleLineStart() {
     document.getElementById("singleLineStep").style.display = "inline-block";
     document.getElementById("singleLineEnd").style.display = "inline-block";
     document.getElementById("singleLineData").style.display = "";
     document.getElementById("singleLineStart").style.display = "none";
     document.getElementById("resetButton").style.display = "inline-block";
-    
+
     // THIS HIDES THE MULTILINE START.
     document.getElementById("multiLineStart").style.display = "none";
     getSingleLineInput();
+}
 
-}export function singleLineStep() {
+export function singleLineStep() {
     console.group("Stepping");
     step(sections, machineState);
     console.log("machine's current state:", machineState.currentState);
     // Check for accept/reject state
-    if (machineState.currentState.stateName === "accept" ||
-        machineState.currentState.stateName === "reject") {
+    if (
+        machineState.currentState.stateName === "accept" ||
+        machineState.currentState.stateName === "reject"
+    ) {
         const singleLineEntry = document.getElementById("singleLineEntry");
         singleLineEntry.style.color =
-            machineState.currentState.stateName === "accept"
-                ? "green"
-                : "red";
+            machineState.currentState.stateName === "accept" ? "green" : "red";
         document.getElementById("singleLineStep").style.display = "none";
         document.getElementById("singleLineEnd").style.display = "none";
     }
@@ -81,7 +79,8 @@ export function getSingleLineInput() {
     }
 
     existingOutputElement.textContent = machineState.singleLineOutputText;
-    existingInputElement.textContent = machineState.singleLineInputText.getData();
+    existingInputElement.textContent =
+        machineState.singleLineInputText.getData();
 
     // Create sections for each key in sections.dataSection
     if (sections && sections.dataSection) {
@@ -98,14 +97,21 @@ export function getSingleLineInput() {
 
             // Set text content in one line
             console.log("sections datasecion:", sections.dataSection[key]);
-            sectionElement.textContent = `${key}: ${sections.dataSection[key].getData()}`;
+            sectionElement.textContent = `${key}: ${sections.dataSection[
+                key
+            ].getData()}`;
         });
     }
     updateUI();
 }
 
 export function instantEnd() {
-    while (!(machineState.currentState.stateName == "reject" || machineState.currentState.stateName == "accept")) {
+    while (
+        !(
+            machineState.currentState.stateName == "reject" ||
+            machineState.currentState.stateName == "accept"
+        )
+    ) {
         singleLineStep();
     }
 }
@@ -134,8 +140,7 @@ export function onSingleLineReset() {
     document.getElementById("singleLineEnd").disabled = false;
     document.getElementById("singleLineStart").style.display = "inline-block";
     updateUI();
-    document.getElementById("singleLineData").innerHTML = '';
+    document.getElementById("singleLineData").innerHTML = "";
 
     document.getElementById("multiLineStart").style.display = "inline-block";
-    
 }

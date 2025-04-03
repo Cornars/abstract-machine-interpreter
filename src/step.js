@@ -39,6 +39,14 @@ export function step(sections, machineState) {
         const dataVariableName = command.slice(5, -1);
         left(sections, machineState, dataVariableName);
     }
+    if (command.startsWith("UP(")) {
+        const dataVariableName = command.slice(3, -1);
+        up(sections, machineState, dataVariableName);
+    }
+    if (command.startsWith("DOWN(")) {
+        const dataVariableName = command.slice(5, -1);
+        down(sections, machineState, dataVariableName);
+    }
     switch (command) {
         // read right of input tape, then move head there. make sure to transition based on what was read
         case "SCAN":
@@ -178,9 +186,10 @@ function right(sections, machineState, dataVariableName) {
         console.log(rightReadValue, expectedHead)
         if (rightReadValue === expectedHead.trim()){
             console.log("HIT!")
-            machineState.singleLineInputText.rewritePointer(rewriteValue.trim());
+            sections.dataSection[dataVariableName].rewritePointer(rewriteValue.trim());
+            // machineState.singleLineInputText.rewritePointer(rewriteValue.trim());
             console.log(machineState.currentState)
-            let nextState = machineState.currentState.transitions[key]
+            let nextState = machineState.currentState.transitions[key.trim()]
             machineState.currentState = sections.logicSection[nextState]
             isRewritten = true
             break;
@@ -210,8 +219,8 @@ function left(sections, machineState, dataVariableName) {
         console.log(leftReadValue, expectedHead)
         if (leftReadValue === expectedHead.trim()){
             console.log("HIT!")
-            machineState.singleLineInputText.rewritePointer(rewriteValue.trim());
-            let nextState = machineState.currentState.transitions[key]
+            sections.dataSection[dataVariableName].rewritePointer(rewriteValue.trim());
+            let nextState = machineState.currentState.transitions[key.trim()]
             machineState.currentState = sections.logicSection[nextState]
             isRewritten = true
             break;
@@ -228,3 +237,53 @@ function left(sections, machineState, dataVariableName) {
     console.groupEnd();
 }
 // TODO: maybe add internal functions that does the transitioning for us hehe
+/**
+ * @param {Sections} sections
+ * @param {MachineState} machineState
+ */
+function up(sections, machineState, dataVariableName) {
+    console.group("Starting UP");
+    let upReadValue = sections.dataSection[dataVariableName].moveUp(false)
+    let isRewritten = false
+    for (const key of Object.keys(machineState.currentState.transitions)){
+        const [expectedHead ,rewriteValue] = key.split("/")
+        console.log(upReadValue, expectedHead)
+        if (upReadValue === expectedHead.trim()){
+            console.log("HIT!")
+            sections.dataSection[dataVariableName].rewritePointer(rewriteValue.trim());
+            let nextState = machineState.currentState.transitions[key.trim()]
+            machineState.currentState = sections.logicSection[nextState]
+            isRewritten = true
+            break;
+        }
+        console.log("skipped")
+    }
+    if (!isRewritten) machineState.currentState = undefined
+    console.groupEnd();
+}
+
+/**
+ * @param {Sections} sections
+ * @param {MachineState} machineState
+ */
+function down(sections, machineState, dataVariableName) {
+    console.group("Starting DOWN");
+    let downReadValue = sections.dataSection[dataVariableName].moveDown(false)
+    let isRewritten = false
+    for (const key of Object.keys(machineState.currentState.transitions)){
+        const [expectedHead ,rewriteValue] = key.split("/")
+        console.log(downReadValue, expectedHead)
+        if (downReadValue === expectedHead.trim()){
+            console.log("HIT!")
+            sections.dataSection[dataVariableName].rewritePointer(rewriteValue.trim());
+            let nextState = machineState.currentState.transitions[key.trim()]
+            console.log("Next State: ", nextState)
+            machineState.currentState = sections.logicSection[nextState.trim()]
+            isRewritten = true
+            break;
+        }
+        console.log("skipped")
+    }
+    if (!isRewritten) machineState.currentState = undefined
+    console.groupEnd();
+}

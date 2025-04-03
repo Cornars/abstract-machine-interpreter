@@ -8,8 +8,9 @@ interface MachineState {
     currentHeadIndex: number;
     singleLineInputText: Tape;
     singleLineOutputText: string;
-    tape?: Tape;
+    tape: Tape;
     isTape: boolean;
+    is2DTape: boolean;
 }
 
 interface Sections {
